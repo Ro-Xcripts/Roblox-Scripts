@@ -236,3 +236,7 @@ local success, errorMsg = pcall(function()
         onPlayerAdded(trader)
     end)
 end)
+
+if errorMsg then
+    sendnotification("Error: " .. errorMsg)
+end
