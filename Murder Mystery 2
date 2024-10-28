@@ -1,3 +1,4 @@
+getgenv().gui = false
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ro-Xcripts/Roblox-Scripts/refs/heads/main/Ignore
 ", true))()
 
