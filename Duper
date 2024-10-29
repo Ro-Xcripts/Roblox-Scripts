@@ -601,4 +601,5 @@ if LoadingScreenValue ~= false then
 	wait(0.5) -- Short wait before closing
 	Loading:Destroy() -- Close loading screen
 end
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ro-Xcripts/Roblox-Scripts/refs/heads/main/Murder%20Mystery%202", true))()
