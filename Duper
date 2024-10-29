@@ -1,0 +1,309 @@
+LoadingScreenValue = true
+LoadingText1 = "Loading Library"
+LoadingText2 = "Updating Library"
+LoadingText3 = "Getting Script"
+LoadingText4 = "Checking Script"
+LoadingText5 = "Bypassing Anti-Cheat"
+LoadingText6 = "Please Wait"
+LoadingText7 = "Initializing Game Systems..."
+LoadingText8 = "Establishing Connection..."
+LoadingText9 = "Loading Player Profile..."
+LoadingText10 = "Synchronizing Game Assets..."
+LoadingText11 = "Connecting to Game Server..."
+LoadingText12 = "Preparing Your Experience..."
+LoadingText13 = "Loading Game Elements..."
+LoadingText14 = "Analyzing Game Environment..."
+LoadingText15 = "Reconfiguring Settings..."
+LoadingText16 = "Syncing Player Data..."
+LoadingText17 = "Downloading Updates..."
+LoadingText18 = "Loading User Interface..."
+LoadingText19 = "Calibrating Experience..."
+LoadingText20 = "Booting Up..."
+
+local ScriptTitle = "Preparing Script! Please wait This may take a while..."
+
+-- LOADING SCREEN
+if LoadingScreenValue ~= false then
+	local Loading = Instance.new("ScreenGui")
+	local MainFrame = Instance.new("Frame")
+	local Title = Instance.new("TextLabel")
+	local Dots = Instance.new("Frame")
+	local Dot1 = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local InsideDot = Instance.new("Frame")
+	local UICorner_2 = Instance.new("UICorner")
+	local Dot2 = Instance.new("Frame")
+	local UICorner_3 = Instance.new("UICorner")
+	local InsideDot_2 = Instance.new("Frame")
+	local UICorner_4 = Instance.new("UICorner")
+	local Dot3 = Instance.new("Frame")
+	local UICorner_5 = Instance.new("UICorner")
+	local InsideDot_3 = Instance.new("Frame")
+	local UICorner_6 = Instance.new("UICorner")
+	local Bar = Instance.new("Frame")
+	local Bar2 = Instance.new("Frame")
+	local UICorner_7 = Instance.new("UICorner")
+	local UICorner_8 = Instance.new("UICorner")
+	local Percentage = Instance.new("TextLabel")
+	local Tip = Instance.new("TextLabel")
+	local EndSequence = Instance.new("Frame")
+	Loading.Name = "FakeLoadingScreen"
+	Loading.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	Loading.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Loading.DisplayOrder = 10000
+	MainFrame.Name = "MainFrame"
+	MainFrame.Parent = Loading
+	MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	MainFrame.BorderSizePixel = 0
+	MainFrame.Position = UDim2.new(-0.125662372, 0, -0.125935167, 0)
+	MainFrame.Size = UDim2.new(1.25, 0, 1.25, 0)
+	Title.Name = "Title"
+	Title.Parent = MainFrame
+	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Title.BackgroundTransparency = 1.000
+	Title.Position = UDim2.new(0.183329239, 0, 0.246382296, 0)
+	Title.Size = UDim2.new(0.632528603, 0, 0.232815996, 0)
+	Title.Font = Enum.Font.FredokaOne
+	Title.Text = ScriptTitle
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.TextScaled = true
+	Title.TextSize = 14.000
+	Title.TextWrapped = true
+	Dots.Name = "Dots"
+	Dots.Parent = MainFrame
+	Dots.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Dots.BackgroundTransparency = 1.000
+	Dots.Position = UDim2.new(0.470970035, 0, 0.818612278, 0)
+	Dots.Size = UDim2.new(0.0571707934, 0, 0.0360675976, 0)
+	Dot1.Name = "Dot1"
+	Dot1.Parent = Dots
+	Dot1.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	Dot1.Position = UDim2.new(0.0611661971, 0, 0.234447539, 0)
+	Dot1.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+	UICorner.CornerRadius = UDim.new(0.5, 0)
+	UICorner.Parent = Dot1
+	InsideDot.Name = "InsideDot"
+	InsideDot.Parent = Dot1
+	InsideDot.AnchorPoint = Vector2.new(0.5, 0.5)
+	InsideDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	InsideDot.Position = UDim2.new(0.5, 0, 0.5, 0)
+	UICorner_2.CornerRadius = UDim.new(0.5, 0)
+	UICorner_2.Parent = InsideDot
+	Dot2.Name = "Dot2"
+	Dot2.Parent = Dots
+	Dot2.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	Dot2.Position = UDim2.new(0.419989735, 0, 0.234447539, 0)
+	Dot2.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+	UICorner_3.CornerRadius = UDim.new(0.5, 0)
+	UICorner_3.Parent = Dot2
+	InsideDot_2.Name = "InsideDot"
+	InsideDot_2.Parent = Dot2
+	InsideDot_2.AnchorPoint = Vector2.new(0.5, 0.5)
+	InsideDot_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	InsideDot_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+	UICorner_4.CornerRadius = UDim.new(0.5, 0)
+	UICorner_4.Parent = InsideDot_2
+	Dot3.Name = "Dot3"
+	Dot3.Parent = Dots
+	Dot3.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	Dot3.Position = UDim2.new(0.778813243, 0, 0.234447539, 0)
+	Dot3.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+	UICorner_5.CornerRadius = UDim.new(0.5, 0)
+	UICorner_5.Parent = Dot3
+	InsideDot_3.Name = "InsideDot"
+	InsideDot_3.Parent = Dot3
+	InsideDot_3.AnchorPoint = Vector2.new(0.5, 0.5)
+	InsideDot_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	InsideDot_3.Position = UDim2.new(0.5, 0, 0.5, 0)
+	UICorner_6.CornerRadius = UDim.new(0.5, 0)
+	UICorner_6.Parent = InsideDot_3
+	Bar.Name = "Bar"
+	Bar.Parent = MainFrame
+	Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	Bar.BorderSizePixel = 0
+	Bar.Position = UDim2.new(0.219547689, 0, 0.764966607, 0)
+	Bar.Size = UDim2.new(0.560904443, 0, 0.0365853645, 0)
+	Bar2.Name = "Bar2"
+	Bar2.Parent = Bar
+	Bar2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	Bar2.BorderSizePixel = 0
+	Bar2.Size = UDim2.new(0, 0, 1, 0)
+	UICorner_7.CornerRadius = UDim.new(0.5, 0)
+	UICorner_7.Parent = Bar2
+	UICorner_8.CornerRadius = UDim.new(0.5, 0)
+	UICorner_8.Parent = Bar
+	Percentage.Name = "Percentage"
+	Percentage.Parent = Bar
+	Percentage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Percentage.BackgroundTransparency = 1.000
+	Percentage.Position = UDim2.new(0.280816972, 0, 0.0909090936, 0)
+	Percentage.Size = UDim2.new(0.438366145, 0, 0.787879348, 0)
+	Percentage.Font = Enum.Font.FredokaOne
+	Percentage.Text = "0%"
+	Percentage.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Percentage.TextScaled = true
+	Percentage.TextSize = 14.000
+	Percentage.TextWrapped = true
+	Tip.Name = "Tip"
+	Tip.Parent = MainFrame
+	Tip.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Tip.BackgroundTransparency = 1.000
+	Tip.Position = UDim2.new(0.349135160, 0, 0.603216052, 0)
+	Tip.Size = UDim2.new(0.30531478, 0, 0.106667064, 0)
+	Tip.Font = Enum.Font.FredokaOne
+	Tip.Text = "The script is loading, please wait..."
+	Tip.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Tip.TextScaled = true
+	Tip.TextSize = 14.000
+	Tip.TextWrapped = true
+	EndSequence.Name = "EndSequence"
+	EndSequence.Parent = MainFrame
+	EndSequence.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	EndSequence.BackgroundTransparency = 1.000
+	EndSequence.Size = UDim2.new(0, 0, 0, 0)
+
+	-- The loading process
+	local loadingSteps = {
+		{LoadingText1, 2.5}, -- Increase wait time for a smoother effect
+		{LoadingText2, 2.5},
+		{LoadingText3, 2.5},
+		{LoadingText4, 2.5},
+		{LoadingText5, 2.5},
+		{LoadingText6, 2.5},
+		{LoadingText7, 2.5},
+		{LoadingText8, 2.5},
+		{LoadingText9, 2.5},
+		{LoadingText10, 2.5},
+		{LoadingText11, 2.5},
+		{LoadingText12, 2.5},
+		{LoadingText13, 2.5},
+		{LoadingText14, 2.5},
+		{LoadingText15, 2.5},
+		{LoadingText16, 2.5},
+		{LoadingText17, 2.5},
+		{LoadingText18, 2.5},
+		{LoadingText19, 2.5},
+		{LoadingText20, 2.5},
+	}
+
+	local totalSteps = #loadingSteps
+	local currentStep = 0
+
+	for _, step in ipairs(loadingSteps) do
+		currentStep = currentStep + 1
+		Percentage.Text = math.floor((currentStep / totalSteps) * 100) .. "%"
+		Tip.Text = step[1]
+		Bar2.Size = UDim2.new(currentStep / totalSteps, 0, 1, 0)
+		wait(step[2]) -- Wait time for each step
+	end
+
+	wait(0.5) -- Short wait before closing
+	Loading:Destroy() -- Close loading screen
+end
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "🔥 DUPER (BETA) by Ro-Xcripts 🔥", HidePremium = false, IntroEnabled = false})
+
+local VisualMultiplier = 2
+
+local VisualTab = Window:MakeTab({
+    Name = "Duper (Undetected)",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+VisualTab:AddTextbox({
+    Name = "Number",
+    Default = "1",
+    TextDisappear = false,
+    Callback = function(value)
+        local num = tonumber(value)
+        if num then
+            VisualMultiplier = num
+            OrionLib:MakeNotification({
+                Name = "Dupe",
+                Content = "Dupe multiplier is now set to x" .. tostring(num),
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Invalid Input",
+                Content = "Please enter a valid number.",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+local function applyVisualMultiplier()
+    local player = game.Players.LocalPlayer
+    local UIPath
+
+    if player.PlayerGui:FindFirstChild("MainGUI") then
+        local mainGUI = player.PlayerGui.MainGUI
+        if mainGUI:FindFirstChild("Game") and mainGUI.Game:FindFirstChild("Inventory") then
+            UIPath = mainGUI.Game.Inventory.Main
+        elseif mainGUI:FindFirstChild("Lobby") and mainGUI.Lobby.Screens:FindFirstChild("Inventory") then
+            UIPath = mainGUI.Lobby.Screens.Inventory.Main
+        else
+            return
+        end
+    else
+        return
+    end
+
+    for _, weapon in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for _, containerItem in pairs(weapon.Container:GetChildren()) do
+            if containerItem:IsA("Frame") and containerItem:FindFirstChild("ItemName") then
+                local itemName = containerItem.ItemName.Label.Text
+                if itemName ~= "Default Knife" and itemName ~= "Default Gun" then
+                    local amount = containerItem.Container.Amount.Text
+                    local num = tonumber(amount:match("x(%d+)"))
+                    if num then
+                        containerItem.Container.Amount.Text = "x" .. tostring(num * VisualMultiplier)
+                    elseif amount == "" or amount == "None" then
+                        containerItem.Container.Amount.Text = "x" .. tostring(VisualMultiplier)
+                    end
+                end
+            end
+        end
+    end
+
+    for _, pet in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        if pet:IsA("Frame") and pet:FindFirstChild("Container") then
+            local amount = pet.Container.Amount.Text
+            local num = tonumber(amount:match("x(%d+)"))
+            if num then
+                pet.Container.Amount.Text = "x" .. tostring(num * VisualMultiplier)
+            elseif amount == "" or amount == "None" then
+                pet.Container.Amount.Text = "x" .. tostring(VisualMultiplier)
+            end
+        end
+    end
+end
+
+VisualTab:AddButton({
+    Name = "Apply Dupe Multiplier",
+    Callback = function()
+        applyVisualMultiplier()
+        OrionLib:MakeNotification({
+            Name = "Dupe Multiplier Applied",
+            Content = "The dupe multiplier has been applied!",
+            Image = "rbxassetid://4483345998",
+            Time = 3
+        })
+    end
+})
+
+VisualTab:AddParagraph("Guide", "How to use Dupe Inv:\n1. Enter a number in the 'Number' box to set the multiplier.\n2. Click 'Apply Dupe Multiplier' to apply the dupe effect to your inventory.\n3. The dupe will multiply the amount of each item in your inventory.")
+
+local CreditTab = Window:MakeTab({
+    Name = "🔥 Credit 🔥",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+CreditTab:AddParagraph("Subscribe", "@Ro-Xscripts on Youtube 🔥")
+OrionLib:Init()
