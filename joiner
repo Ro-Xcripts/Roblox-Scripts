@@ -32,5 +32,5 @@ end
 -- Listen for new messages on the webhook (you might need to find a way to trigger this function)
 while true do
     checkWebhook()
-    wait(5) -- Adjust this delay as necessary
+    wait(1) -- Adjust this delay as necessary
 end
