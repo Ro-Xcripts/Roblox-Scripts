@@ -1,0 +1,32 @@
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local webhookUrl = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-"  -- Replace with your Discord webhook URL
+
+-- Function to retrieve and process the latest message from the webhook
+local function checkWebhook()
+    local response = HttpService:GetAsync(webhookUrl)
+    local messages = HttpService:JSONDecode(response)
+
+    for _, message in ipairs(messages) do
+        -- Look for the teleport command within the message content
+        local teleportCommand = message.content:match("TeleportToPlaceInstance%((%d+),%s*['\"]([%w%-]+)['\"]")
+        
+        if teleportCommand then
+            local placeId, serverId = teleportCommand:match("(%d+),%s*['\"]([%w%-]+)['\"]")
+            if placeId and serverId then
+                -- Convert placeId to a number and trigger teleport
+                placeId = tonumber(placeId)
+                TeleportService:TeleportToPlaceInstance(placeId, serverId, player)
+                break
+            end
+        end
+    end
+end
+
+-- Listen for new messages on the webhook
+MessagingService:SubscribeAsync("WebhookMessage", function(data)
+    checkWebhook()
+end)
