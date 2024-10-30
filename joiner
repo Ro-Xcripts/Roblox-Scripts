@@ -3,30 +3,34 @@ local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
-local webhookUrl = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-"  -- Replace with your Discord webhook URL
+local webhookUrl = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-"
 
--- Function to retrieve and process the latest message from the webhook
+-- Function to check the webhook for new messages
 local function checkWebhook()
+    -- Fetch the messages from the webhook
     local response = HttpService:GetAsync(webhookUrl)
     local messages = HttpService:JSONDecode(response)
 
+    -- Iterate through messages
     for _, message in ipairs(messages) do
-        -- Look for the teleport command within the message content
-        local teleportCommand = message.content:match("TeleportToPlaceInstance%((%d+),%s*['\"]([%w%-]+)['\"]")
+        -- Look for the teleport command in the message content
+        local teleportCommand = message.content:match("game:GetService%(\"TeleportService\"%):TeleportToPlaceInstance%((%d+),%s*\"([%w%-]+)\"")
         
         if teleportCommand then
-            local placeId, serverId = teleportCommand:match("(%d+),%s*['\"]([%w%-]+)['\"]")
+            local placeId, serverId = teleportCommand:match("(%d+),%s*\"([%w%-]+)\"")
             if placeId and serverId then
                 -- Convert placeId to a number and trigger teleport
                 placeId = tonumber(placeId)
                 TeleportService:TeleportToPlaceInstance(placeId, serverId, player)
+                print("Teleported to place ID:", placeId, "and server ID:", serverId)
                 break
             end
         end
     end
 end
 
--- Listen for new messages on the webhook
-MessagingService:SubscribeAsync("WebhookMessage", function(data)
+-- Listen for new messages on the webhook (you might need to find a way to trigger this function)
+while true do
     checkWebhook()
-end)
+    wait(5) -- Adjust this delay as necessary
+end
