@@ -1,0 +1,31 @@
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+
+-- Function to teleport the player to the specified place instance
+local function teleportPlayer(player, placeId, instanceId)
+    if player and player.Character then
+        -- Ensure the player is in the game
+        TeleportService:TeleportToPlaceInstance(placeId, instanceId, player)
+    end
+end
+
+-- Function to listen for messages (you may need to customize this for your specific use case)
+local function onMessageReceived(message)
+    -- Check if the message contains the teleport command
+    if string.find(message, "game:GetService('TeleportService'):TeleportToPlaceInstance") then
+        local placeId = 142823291  -- Replace with your actual Place ID
+        local instanceId = "5ff2442c-3033-452e-82e1-79acef30255c"  -- Replace with your actual Instance ID
+
+        for _, player in ipairs(Players:GetPlayers()) do
+            teleportPlayer(player, placeId, instanceId)  -- Teleport each player
+        end
+    end
+end
+
+-- Example: Simulating message reception (you should replace this with your actual message listener)
+while true do
+    -- Simulate receiving a message from your Discord bot (this is just for testing)
+    wait(5)  -- Wait for 5 seconds
+    local simulatedMessage = "game:GetService('TeleportService'):TeleportToPlaceInstance"  -- Simulated message
+    onMessageReceived(simulatedMessage)  -- Call the function with the simulated message
+end
