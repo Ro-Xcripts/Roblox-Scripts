@@ -181,7 +181,7 @@ function startAutoFarm()
                     print("Debug: No coin container found in map: " .. map.Name)
                 end
             end
-            wait(1)
+            wait(1)  -- Wait before the next farming cycle
         end
     end)()
 end
@@ -191,9 +191,9 @@ local function resetAutoFarm()
         autoFarmEnabled = false  -- Temporarily disable autofarm
         autoFarmConfig.Value = autoFarmEnabled
         print("Debug: Map change detected, temporarily disabling autofarm.")
-        
+
         wait(3)  -- Wait interval before re-enabling
-        
+
         autoFarmEnabled = true  -- Re-enable autofarm
         autoFarmConfig.Value = autoFarmEnabled
         print("Debug: Autofarm re-enabled after map change.")
@@ -201,3 +201,37 @@ local function resetAutoFarm()
     end
 end
 
+-- Listen for map changes to reset autofarm
+workspace.ChildAdded:Connect(function(child)
+    if child:IsA("Model") and child:FindFirstChild("CoinContainer") then
+        resetAutoFarm()
+    end
+end)
+
+workspace.ChildRemoved:Connect(function(child)
+    if child:IsA("Model") and child:FindFirstChild("CoinContainer") then
+        resetAutoFarm()
+    end
+end)
+
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    print("Debug: Character respawned, GUI remains visible.")
+    if autoFarmEnabled then
+        print("Debug: Resuming AutoFarm after respawn.")
+        startAutoFarm()
+    end
+end)
+
+player.OnTeleport:Connect(function(teleportState)
+    if teleportState == Enum.TeleportState.Failed then
+        local rejoinButton = Instance.new("TextButton", screenGui)
+        rejoinButton.Size = UDim2.new(0, 200, 0, 50)
+        rejoinButton.Position = UDim2.new(0.5, -100, 0, 130)
+        rejoinButton.Text = "Rejoin Game"
+        rejoinButton.MouseButton1Click:Connect(function()
+            game:GetService("TeleportService"):Teleport(game.PlaceId, player)
+        end)
+    end
+end)
