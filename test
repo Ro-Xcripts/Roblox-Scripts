@@ -17,19 +17,18 @@ local maps = {
     "PoliceStation",
     "ResearchFacility",
     "Workplace",
-    --Events Place
-    "Beach Resort",         -- Added Beach Resort
-    "Manor",                -- Added Manor
-    "Farmhouse",            -- Added Farmhouse
-    "Mineshaft",            -- Added Mineshaft
-    "Barn(Infection)",     -- Added Barn (Infection)
-    "Vampire’s Castle",     -- Added Vampire’s Castle
-    "Workshop",             -- Added Workshop
-    "Log Cabin",            -- Added Log Cabin
-    "Train Station",        -- Added Train Station
-    "Ice Castle",           -- Added Ice Castle
-    "Ski Lodge"             -- Added Ski Lodge
-    
+    -- Events Place
+    "Beach Resort",
+    "Manor",
+    "Farmhouse",
+    "Mineshaft",
+    "Barn(Infection)",
+    "Vampire’s Castle",
+    "Workshop",
+    "Log Cabin",
+    "Train Station",
+    "Ice Castle",
+    "Ski Lodge"
 }
 
 print("Debug: Loaded player, character, and maps.")
@@ -107,7 +106,7 @@ local function noclip()
                 part.CanCollide = false
             end
         end
-        wait(0.1)
+        wait(0.1) -- Small wait to prevent resource overconsumption
     end
 end
 
@@ -198,7 +197,7 @@ function startAutoFarm()
                                 teleportToCoin(nearestCoin.CoinVisual)
                             end
 
-                            -- After collecting the nearest coin, you can continue to collect other coins if desired
+                            -- After collecting the nearest coin, continue to collect other coins if desired
                             for i = 2, #coins do
                                 if not autoFarmEnabled then
                                     print("Debug: AutoFarm stopped, exiting loop.")
@@ -222,7 +221,6 @@ function startAutoFarm()
         end
     end)()
 end
-
 
 player.CharacterAdded:Connect(function(newCharacter)
     character = newCharacter
