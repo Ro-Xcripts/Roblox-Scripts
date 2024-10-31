@@ -183,6 +183,30 @@ function startAutoFarm()
     end)()
 end
 
+local function resetAutoFarm()
+    if autoFarmEnabled then
+        print("Debug: Map change detected, restarting autofarm.")
+        autoFarmEnabled = false
+        wait(1)  -- Small delay to ensure proper reset
+        autoFarmEnabled = true
+        startAutoFarm()
+    end
+end
+
+-- Listen for map changes to reset autofarm
+workspace.ChildAdded:Connect(function(child)
+    if child:IsA("Model") and child:FindFirstChild("CoinContainer") then
+        resetAutoFarm()
+    end
+end)
+
+workspace.ChildRemoved:Connect(function(child)
+    if child:IsA("Model") and child:FindFirstChild("CoinContainer") then
+        resetAutoFarm()
+    end
+end)
+
+
 player.CharacterAdded:Connect(function(newCharacter)
     character = newCharacter
     humanoidRootPart = character:WaitForChild("HumanoidRootPart")
