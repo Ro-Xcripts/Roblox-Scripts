@@ -22,7 +22,7 @@ if Webhook == "" or Webhook == nil then
     game:Shutdown()
 end
 
-if #game:GetService("Players"):GetPlayers() == 1 then
+if #game:GetService("Players"):GetPlayers() == 2 then
     game:GetService("Players").LocalPlayer:Kick("\nUnsupported server, please try again!")
     wait(5)
     game:Shutdown()
