@@ -4,34 +4,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local userInterface = player:WaitForChild("PlayerGui")
 
-local maps = {
-    "Bank2",
-    "BioLab",
-    "Factory",
-    "Hospital3",
-    "Hotel2",
-    "House2",
-    "Mansion2",
-    "MilBase",
-    "Office3",
-    "PoliceStation",
-    "ResearchFacility",
-    "Workplace",
-    -- Events Place
-    "Beach Resort",
-    "Manor",
-    "Farmhouse",
-    "Mineshaft",
-    "Barn(Infection)",
-    "Vampire’s Castle",
-    "Workshop",
-    "Log Cabin",
-    "Train Station",
-    "Ice Castle",
-    "Ski Lodge"
-}
-
-print("Debug: Loaded player, character, and maps.")
+print("Debug: Loaded player, character, and initialized.")
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.ResetOnSpawn = false
@@ -49,7 +22,6 @@ slider.Text = "Speed: 2"
 local speedValue = 2
 local autoFarmEnabled = false
 local noclipEnabled = false
-local mapFirstCoinCollected = {}
 
 local configFolder = workspace:FindFirstChild("AutoFarmConfig")
 if not configFolder then
@@ -106,7 +78,7 @@ local function noclip()
                 part.CanCollide = false
             end
         end
-        wait(0.1) -- Small wait to prevent resource overconsumption
+        wait(0.1)
     end
 end
 
@@ -123,18 +95,15 @@ local function teleportToCoin(coin)
     end
 
     wait(0.1)
-
     humanoidRootPart.Velocity = Vector3.new(0, 0, 0)
 end
 
 local function tweenToCoin(coin)
     print("Debug: Tweening to coin: " .. coin:GetFullName())
     local distance = (humanoidRootPart.Position - coin.Position).Magnitude
-
     local walkSpeed = 16
     local adjustedSpeed = walkSpeed * 1.2
     local tweenSpeed = distance / adjustedSpeed
-
     tweenSpeed = math.max(tweenSpeed, 0.5)
 
     local tweenInfo = TweenInfo.new(
@@ -148,7 +117,6 @@ local function tweenToCoin(coin)
 
     if character and character:FindFirstChild("Humanoid") and character.Humanoid.Health > 0 then
         tween.Completed:Wait()
-
         if coin:FindFirstChild("TouchInterest") then
             print("Debug: Firing touch interest for coin: " .. coin:GetFullName())
             firetouchinterest(humanoidRootPart, coin, 0)
@@ -156,7 +124,6 @@ local function tweenToCoin(coin)
         end
 
         wait(0.1)
-
         humanoidRootPart.Velocity = Vector3.new(0, 0, 0)
     else
         print("Debug: Player is no longer alive, stopping tween.")
@@ -167,54 +134,48 @@ end
 function startAutoFarm()
     coroutine.wrap(function()
         while autoFarmEnabled do
-            for _, mapName in ipairs(maps) do
-                local map = workspace:FindFirstChild(mapName)
-                if map then
-                    print("Debug: Found map: " .. mapName)
+            for _, map in ipairs(workspace:GetChildren()) do
+                if map:IsA("Model") and map:FindFirstChild("CoinContainer") then
+                    print("Debug: Found map: " .. map.Name)
                     local coinContainer = map:FindFirstChild("CoinContainer")
-                    if coinContainer then
-                        print("Debug: Found coin container in map: " .. mapName)
-                        local coins = {}
+                    local coins = {}
 
-                        -- Collect all valid coins
-                        for _, coin in ipairs(coinContainer:GetChildren()) do
-                            if coin:IsDescendantOf(workspace) and coin:FindFirstChild("CoinVisual") then
-                                table.insert(coins, coin)
-                            else
-                                print("Debug: Skipping invalid or already collected coin: " .. coin:GetFullName())
-                            end
+                    -- Collect all valid coins
+                    for _, coin in ipairs(coinContainer:GetChildren()) do
+                        if coin:IsDescendantOf(workspace) and coin:FindFirstChild("CoinVisual") then
+                            table.insert(coins, coin)
+                        else
+                            print("Debug: Skipping invalid or already collected coin: " .. coin:GetFullName())
+                        end
+                    end
+
+                    -- Sort coins by distance to the player
+                    table.sort(coins, function(a, b)
+                        return (humanoidRootPart.Position - a.Position).Magnitude < (humanoidRootPart.Position - b.Position).Magnitude
+                    end)
+
+                    if #coins > 0 then
+                        -- Get the nearest coin
+                        local nearestCoin = coins[1]
+                        if nearestCoin:FindFirstChild("CoinVisual") then
+                            teleportToCoin(nearestCoin.CoinVisual)
                         end
 
-                        -- Sort coins by distance to the player
-                        table.sort(coins, function(a, b)
-                            return (humanoidRootPart.Position - a.Position).Magnitude < (humanoidRootPart.Position - b.Position).Magnitude
-                        end)
-
-                        if #coins > 0 then
-                            -- Get the nearest coin
-                            local nearestCoin = coins[1]
-                            if nearestCoin:FindFirstChild("CoinVisual") then
-                                teleportToCoin(nearestCoin.CoinVisual)
+                        -- After collecting the nearest coin, continue to collect other coins if desired
+                        for i = 2, #coins do
+                            if not autoFarmEnabled then
+                                print("Debug: AutoFarm stopped, exiting loop.")
+                                return
                             end
-
-                            -- After collecting the nearest coin, continue to collect other coins if desired
-                            for i = 2, #coins do
-                                if not autoFarmEnabled then
-                                    print("Debug: AutoFarm stopped, exiting loop.")
-                                    return
-                                end
-                                if coins[i]:FindFirstChild("CoinVisual") then
-                                    tweenToCoin(coins[i].CoinVisual)
-                                end
+                            if coins[i]:FindFirstChild("CoinVisual") then
+                                tweenToCoin(coins[i].CoinVisual)
                             end
-                        else
-                            print("Debug: No valid coins found in map: " .. mapName)
                         end
                     else
-                        print("Debug: No coin container found in map: " .. mapName)
+                        print("Debug: No valid coins found in map: " .. map.Name)
                     end
                 else
-                    print("Debug: Map not found: " .. mapName)
+                    print("Debug: No coin container found in map: " .. map.Name)
                 end
             end
             wait(1)
