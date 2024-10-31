@@ -5,20 +5,31 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local userInterface = player:WaitForChild("PlayerGui")
 
 local maps = {
-    "Factory",
-    "BioLab",
-    "House2",
-    "Hospital3",
-    "Workplace",
-    "MilBase",
     "Bank2",
+    "BioLab",
+    "Factory",
+    "Hospital3",
     "Hotel2",
+    "House2",
     "Mansion2",
+    "MilBase",
     "Office3",
     "PoliceStation",
     "ResearchFacility",
-    "Hotel",
-    "VampireCastle"
+    "Workplace",
+    --Events Place
+    "Beach Resort",         -- Added Beach Resort
+    "Manor",                -- Added Manor
+    "Farmhouse",            -- Added Farmhouse
+    "Mineshaft",            -- Added Mineshaft
+    "Barn(Infection)",     -- Added Barn (Infection)
+    "Vampire’s Castle",     -- Added Vampire’s Castle
+    "Workshop",             -- Added Workshop
+    "Log Cabin",            -- Added Log Cabin
+    "Train Station",        -- Added Train Station
+    "Ice Castle",           -- Added Ice Castle
+    "Ski Lodge"             -- Added Ski Lodge
+    
 }
 
 print("Debug: Loaded player, character, and maps.")
@@ -165,40 +176,40 @@ function startAutoFarm()
                     if coinContainer then
                         print("Debug: Found coin container in map: " .. mapName)
                         local coins = {}
+
+                        -- Collect all valid coins
                         for _, coin in ipairs(coinContainer:GetChildren()) do
-                            if not coin:IsDescendantOf(workspace) then
-                                print("Debug: Skipping already collected coin: " .. coin:GetFullName())
-                            elseif not coin:FindFirstChild("CoinVisual") then
-                                print("Debug: Skipping invalid coin: " .. coin:GetFullName())
-                            else
+                            if coin:IsDescendantOf(workspace) and coin:FindFirstChild("CoinVisual") then
                                 table.insert(coins, coin)
+                            else
+                                print("Debug: Skipping invalid or already collected coin: " .. coin:GetFullName())
                             end
                         end
+
+                        -- Sort coins by distance to the player
                         table.sort(coins, function(a, b)
-                            if a:IsA("BasePart") and b:IsA("BasePart") then
-                                return (humanoidRootPart.Position - a.Position).Magnitude < (humanoidRootPart.Position - b.Position).Magnitude
-                            end
-                            return false
+                            return (humanoidRootPart.Position - a.Position).Magnitude < (humanoidRootPart.Position - b.Position).Magnitude
                         end)
+
                         if #coins > 0 then
-                            local firstCoin = coins[1]
-                            if not mapFirstCoinCollected[mapName] then
-                                if firstCoin:FindFirstChild("CoinVisual") then
-                                    teleportToCoin(firstCoin.CoinVisual)
-                                    mapFirstCoinCollected[mapName] = true
+                            -- Get the nearest coin
+                            local nearestCoin = coins[1]
+                            if nearestCoin:FindFirstChild("CoinVisual") then
+                                teleportToCoin(nearestCoin.CoinVisual)
+                            end
+
+                            -- After collecting the nearest coin, you can continue to collect other coins if desired
+                            for i = 2, #coins do
+                                if not autoFarmEnabled then
+                                    print("Debug: AutoFarm stopped, exiting loop.")
+                                    return
                                 end
-                            else
-                                teleportToCoin(firstCoin.CoinVisual)
-                                for _, coin in ipairs(coins) do
-                                    if not autoFarmEnabled then
-                                        print("Debug: AutoFarm stopped, exiting loop.")
-                                        return
-                                    end
-                                    if coin:FindFirstChild("CoinVisual") then
-                                        tweenToCoin(coin.CoinVisual)
-                                    end
+                                if coins[i]:FindFirstChild("CoinVisual") then
+                                    tweenToCoin(coins[i].CoinVisual)
                                 end
                             end
+                        else
+                            print("Debug: No valid coins found in map: " .. mapName)
                         end
                     else
                         print("Debug: No coin container found in map: " .. mapName)
@@ -211,6 +222,7 @@ function startAutoFarm()
         end
     end)()
 end
+
 
 player.CharacterAdded:Connect(function(newCharacter)
     character = newCharacter
