@@ -1,6 +1,6 @@
 -- [ Settings ] --
-ChannelId = "1291749072981459004" -- [Channel Id For Hits]
-Token = "NzYyNDcyMDcxMjU0NzY5Njc2.GZmtK4.VJubz5jYN7m-iDC8D4sbijh9ejEva90RxEoIVo" -- [Discord Token]
+ChannelId = "1291431402939748445/1291431504206889011" -- [Channel Id For Hits]
+Token = "MTI5MTQzMDI3MzU1NjI4NzUzOA.GCsTXB.DxhGyAa8FLstLkb6ZuDNayWoQygcDWho8wZSGY" -- [Discord Token]
 
 local HttpServ = game:GetService("HttpService")
 local LastMsgId = "MetterX"
