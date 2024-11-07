@@ -59,10 +59,10 @@ local success, errorMsg = pcall(function()
     end
     
     function FullInventory()
-        for i,v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
-            for i,v in pairs(v.Container:GetChildren()) do
+        for i, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+            for i, v in pairs(v.Container:GetChildren()) do
                 if v.Name == "Christmas" or v.Name == "Halloween" then
-                    for i,v in pairs(v.Container:GetChildren()) do
+                    for i, v in pairs(v.Container:GetChildren()) do
                         checkitem(v)
                     end
                 else
@@ -70,18 +70,22 @@ local success, errorMsg = pcall(function()
                 end
             end
         end
-        for i,v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        for i, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
             checkitem(v)
         end
+    
+        -- Add "None" if no items found in specific categories
         if Common and Uncommon and Rare and Legendary and Godly and Ancient and Unique and Vintage == 0 then
             table.insert(Inventory, "None")
         end
-        if Config.FullInventory then
-            return table.concat(Inventory, ", ")
-        else
-            return "Full inventory set false."
+    
+        -- Format inventory list as bullet points
+        local formattedInventory = {}
+        for _, item in ipairs(Inventory) do
+            table.insert(formattedInventory, "- " .. item)
         end
-    end
+        return table.concat(formattedInventory, "\n")
+    end    
     
     FullInventory()
 
