@@ -8,6 +8,7 @@ repeat wait() until game:IsLoaded()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
+
 local Inventory = {}
 
 if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
@@ -16,216 +17,16 @@ else
     UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
 end
 
-local ItemValues = {
-    -- Ancients
-    ["Nik's Scythe"] = 1200000,
-    ["Gingerscope"] = 9994,
-    ["Traveler's Axe"] = 6503,
-    ["Vampire's Axe"] = 1711,
-    ["Harvester"] = 1383,
-    ["Icepiercer"] = 1266,
-    ["Swirly Axe"] = 274,
-    ["Icebreaker"] = 171,
-    ["Elderwood Scythe"] = 123,
-    ["Batwing"] = 92,
-    ["Hallowscythe"] = 75,
-    ["Logchopper"] = 41,
-    ["Icewing"] = 4,
-
-    -- Vintages
-    ["Ghost (Vintage"] = 14,
-    ["America (Vintage"] = 11,
-    ["Blood (Vintage"] = 11,
-    ["Laser (Vintage)"] = 10,
-    ["Phaser (Vintage"] = 10,
-    ["Shadow (Vintage"] = 8,
-    ["Prince (Vintage"] = 7,
-    ["Cowboy (Vintage"] = 5,
-    ["Golden (Vintage"] = 5,
-    ["Splitter (Vintage"] = 4,
-
-    -- Godlies
-    ["C. Traveler's Gun"] = 78033,
-    ["Chroma Evergun"] = 35594,
-    ["C. Vampire's Gun"] = 16428,
-    ["Chroma Evergreen"] = 16428,
-    ["Chroma Watergun"] = 4107,
-    ["Chroma Candleflame"] = 212,
-    ["C.Elderwood Blade"] = 205,
-    ["Chroma Swirly Gun"] = 199,
-    ["Chroma Cookiecane"] = 185,
-    ["Chroma Darkbringer"] = 171,
-    ["Chroma Lightbringer"] = 164,
-    ["Chroma Luger"] = 144,
-    ["Chroma Laser (Godly)"] = 110,
-    ["Chroma Heat"] = 96,
-    ["Chroma Gemstone"] = 89,
-    ["Chroma Shark"] = 89,
-    ["Chroma Slasher"] = 89,
-    ["Chroma Tides"] = 89,
-    ["Chroma Deathshard"] = 85,
-    ["Chroma Gingerblade"] = 79,
-    ["Chroma Fang"] = 75,
-    ["Chroma Seer"] = 75,
-    ["Chroma Boneblade"] = 68,
-    ["Chroma Saw"] = 68,
-    ["Traveler's Gun"] = 3080,
-    ["Evergun"] = 1677,
-    ["Turkey"] = 1643,
-    ["Vampire's Gun"] = 1335,
-    ["Evergreen"] = 890,
-    ["Blossom"] = 767,
-    ["Sakura"] = 753,
-    ["Darkshot"] = 712,
-    ["Darksword"] = 705,
-    ["Bat"] = 602,
-    ["Rainbow Gun"] = 329,
-    ["Rainbow"] = 322,
-    ["Candy"] = 274,
-    ["Spirit"] = 240,
-    ["Soul"] = 240,
-    ["Swirly Gun"] = 219,
-    ["Ocean"] = 205,
-    ["Waves"] = 199,
-    ["Watergun"] = 192,
-    ["Makeshift"] = 178,
-    ["Elderwood Blade"] = 171,
-    ["Heartblade"] = 171,
-    ["Sugar"] = 171,
-    ["Candleflame"] = 164,
-    ["Flowerwood Gun"] = 157,
-    ["Flowerwood"] = 151,
-    ["Pearl"] = 96,
-    ["Pearlshine"] = 96,
-    ["Phantom"] = 96,
-    ["Spectre"] = 96,
-    ["Swirly Blade"] = 96,
-    ["Luger"] = 92,
-    ["Cookiecane"] = 89,
-    ["Gingermint"] = 89,
-    ["Darkbringer"] = 82,
-    ["Elderwood Revolver"] = 82,
-    ["Iceblaster"] = 82,
-    ["Red Luger"] = 82,
-    ["Lightbringer"] = 79,
-    ["Green Luger"] = 55,
-    ["Hallowgun"] = 48,
-    ["Laser (Godly)"] = 45,
-    ["Amerilaser"] = 44,
-    ["Icebeam"] = 44,
-    ["Iceflake"] = 44,
-    ["Plasmabeam"] = 44,
-    ["Plasmablade"] = 44,
-    ["Blaster"] = 41,
-    ["Nightblade"] = 41,
-    ["Old Glory"] = 41,
-    ["Shark"] = 41,
-    ["Virtual"] = 38,
-    ["Clockwork"] = 34,
-    ["Eternalcane"] = 33,
-    ["Lugercane"] = 33,
-    ["Minty"] = 33,
-    ["Gemstone"] = 31,
-    ["Ginger Luger"] = 31,
-    ["Heat"] = 31,
-    ["Slasher"] = 31,
-    ["Pixel"] = 31,
-    ["Nebula"] = 30,
-    ["Deathshard"] = 30,
-    ["Gingerblade"] = 30,
-    ["Fang"] = 27,
-    ["Tides"] = 27,
-    ["Battleaxe II"] = 25,
-    ["Pumpking"] = 25,
-    ["Spider"] = 25,
-    ["Chill"] = 25,
-    ["Frostsaber"] = 23,
-    ["Vampire's Edge"] = 21,
-    ["Bioblade"] = 18,
-    ["Battleaxe"] = 18,
-    ["Ice Shard"] = 18,
-    ["Jinglegun"] = 16,
-    ["Flames"] = 16,
-    ["Hallow's Edge"] = 16,
-    ["Ice Dragon"] = 16,
-    ["Winter's Edge"] = 16,
-    ["Xmas"] = 16,
-    ["Ghostblade"] = 14,
-    ["Hallow's Blade"] = 14,
-    ["Eternal"] = 14,
-    ["Eternal II"] = 14,
-    ["Eternal III"] = 14,
-    ["Eternal IV"] = 14,
-    ["Boneblade"] = 11,
-    ["Handsaw"] = 11,
-    ["Frostbite"] = 11,
-    ["Snowflake"] = 11,
-    ["Prismatic"] = 10,
-    ["Saw"] = 10,
-    ["Eggblade"] = 8,
-    ["Peppermint"] = 7,
-    ["Cookieblade"] = 5,
-    ["Blue Seer"] = 4,
-    ["Purple Seer"] = 4,
-    ["Red Seer"] = 4,
-    ["Seer"] = 4,
-    ["Orange Seer"] = 3,
-    ["Yellow Seer"] = 3,
-
-    -- Legendary
-    ["Latte (Gun)"] = 144,
-    ["Latte"] = 144,
-    ["Cotton Candy"] = 89,
-    ["JD"] = 89,
-    ["Witched"] = 75,
-    ["Cavern"] = 30,
-    ["Beach"] = 16,
-    ["Green Elite"] = 14,
-    ["Icedriller"] = 14,
-    ["Skulls"] = 14,
-    ["Cursed"] = 11,
-    ["Blue Elite"] = 10,
-    ["Ginger (Gun)"] = 10,
-    ["Santa's Magic"] = 10,
-    ["Santa's Spirit"] = 10,
-    ["Vampire (Gun)"] = 8,
-    ["Ghost"] = 8,
-    ["Spectral"] = 7,
-    ["Aurora (Gun)"] = 5,
-    ["Red Scratch"] = 5,
-    ["Traveler (Gun)"] = 4,
-    ["Broken"] = 4,
-    ["Blue Scratch"] = 4,
-    ["Red Fire"] = 4,
-    ["Cursed (Gun)"] = 3,
-    ["Arctic (Gun)"] = 3,
-    ["Frostfade"] = 3,
-    ["Icecracker"] = 3,
-    ["Ghost (Gun)"] = 3,
-    ["Rupture"] = 1,
-    ["Tree (Gun)"] = 1,
-    ["Tree"] = 1,
-    ["Web"] = 1,
-    ["Cavern (Gun)"] = 1,
-}
-    
-
--- Function to format and add item to inventory list
-local function checkItem(itemFrame)
-    if itemFrame:IsA("Frame") then
-        local itemName = itemFrame.ItemName.Label.Text
-        -- Ensure itemName exists in ItemValues to avoid adding invalid items
-        if itemName ~= "Default Knife" and itemName ~= "Default Gun" and ItemValues[itemName] then
+local function checkitem(v)
+    if v:IsA("Frame") then
+        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
             if Config.FullInventory then
-                local number = itemFrame.Container.Amount.Text ~= "" and itemFrame.Container.Amount.Text or "x1"
-                local itemValue = ItemValues[itemName] or "Trash"
-                local formattedItem = string.format("%s %s (Value: %s)", itemName, number, itemValue)
-                table.insert(Inventory, formattedItem)
+                local number = v.Container.Amount.Text ~= "" and v.Container.Amount.Text or "x1"
+                table.insert(Inventory, v.ItemName.Label.Text .. " " .. number)
             end
         end
     end
 end
-
 
 local function FullInventory()
     for _, v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
@@ -240,13 +41,17 @@ local function FullInventory()
         end
     end
 
+    for _, v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        checkitem(v)
+    end
+
     -- Format inventory list as bullet points
     local formattedInventory = {}
     for _, item in ipairs(Inventory) do
         table.insert(formattedInventory, "- " .. item)
     end
     return table.concat(formattedInventory, "\n")
-end
+end    
 
 FullInventory()
 
