@@ -1,7 +1,3 @@
--- YARHM 1.18.2
--- is anyone even gonna see these comments
-
-
 if not game:IsLoaded() then
 	game:GetService("StarterGui"):SetCore("SendNotification", {
 		Title = "Script loading",
@@ -194,11 +190,11 @@ Converted["_YARHM"].IgnoreGuiInset = true
 Converted["_YARHM"].ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 Converted["_YARHM"].ResetOnSpawn = false
 Converted["_YARHM"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Converted["_YARHM"].Name = "YARHM"
+Converted["_YARHM"].Name = "Ro-Xcripts Hub!"
 Converted["_YARHM"].Parent = game:GetService("CoreGui")
 
 Converted["_Open"].Font = Enum.Font.Gotham
-Converted["_Open"].Text = "Triple-click this region to open YARHM."
+Converted["_Open"].Text = "Triple-click this region to open."
 Converted["_Open"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Open"].TextScaled = true
 Converted["_Open"].TextSize = 14
@@ -723,7 +719,7 @@ Converted["_HubCredits"].Name = "HubCredits"
 Converted["_HubCredits"].Parent = Converted["_Menu"]
 
 Converted["_HubDesc"].Font = Enum.Font.GothamBold
-Converted["_HubDesc"].Text = "NIGGA"
+Converted["_HubDesc"].Text = "yet another random hub menu"
 Converted["_HubDesc"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubDesc"].TextSize = 14
 Converted["_HubDesc"].TextWrapped = true
@@ -739,7 +735,7 @@ Converted["_HubDesc"].Name = "HubDesc"
 Converted["_HubDesc"].Parent = Converted["_Menu"]
 
 Converted["_HubName"].Font = Enum.Font.GothamBold
-Converted["_HubName"].Text = "YARHM"
+Converted["_HubName"].Text = "Ro-Xcripts Hub!"
 Converted["_HubName"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubName"].TextScaled = true
 Converted["_HubName"].TextSize = 14
@@ -846,7 +842,7 @@ Converted["_TextLabel6"].Size = UDim2.new(0, 200, 0, 50)
 Converted["_TextLabel6"].Parent = Converted["_Area1"]
 
 Converted["_TextLabel7"].Font = Enum.Font.GothamBold
-Converted["_TextLabel7"].Text = "YARHM"
+Converted["_TextLabel7"].Text = "asd"
 Converted["_TextLabel7"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel7"].TextScaled = true
 Converted["_TextLabel7"].TextSize = 14
