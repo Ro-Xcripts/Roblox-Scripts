@@ -126,7 +126,6 @@ local Converted = {
 	["_ImageLabel1"] = Instance.new("ImageLabel");
 	["_UIPadding10"] = Instance.new("UIPadding");
 	["_Modules"] = Instance.new("Folder");
-	["_Flee the Facility"] = Instance.new("LocalScript");
 	["_Murder Mystery 2"] = Instance.new("LocalScript");
 	["_Universal"] = Instance.new("LocalScript");
 	["_DropdownFrameSample"] = Instance.new("Frame");
