@@ -738,7 +738,7 @@ Converted["_HubDesc"].Name = "HubDesc"
 Converted["_HubDesc"].Parent = Converted["_Menu"]
 
 Converted["_HubName"].Font = Enum.Font.GothamBold
-Converted["_HubName"].Text = "YARHM"
+Converted["_HubName"].Text = "Murder Mystery 2"
 Converted["_HubName"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubName"].TextScaled = true
 Converted["_HubName"].TextSize = 14
