@@ -197,7 +197,7 @@ Converted["_YARHM"].Name = "YARHM"
 Converted["_YARHM"].Parent = game:GetService("CoreGui")
 
 Converted["_Open"].Font = Enum.Font.Gotham
-Converted["_Open"].Text = "Triple-click this region to open.."
+Converted["_Open"].Text = "Triple-click this region to open."
 Converted["_Open"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Open"].TextScaled = true
 Converted["_Open"].TextSize = 14
@@ -448,6 +448,21 @@ Converted["_UIPadding4"].PaddingRight = UDim.new(0, 10)
 Converted["_UIPadding4"].PaddingTop = UDim.new(0, 10)
 Converted["_UIPadding4"].Parent = Converted["_TextBox1"]
 
+Converted["_TextLabel2"].Font = Enum.Font.Gotham
+Converted["_TextLabel2"].Text = "Only add modules you trust!"
+Converted["_TextLabel2"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel2"].TextScaled = true
+Converted["_TextLabel2"].TextSize = 14
+Converted["_TextLabel2"].TextWrapped = true
+Converted["_TextLabel2"].AnchorPoint = Vector2.new(0.5, 0.5)
+Converted["_TextLabel2"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel2"].BackgroundTransparency = 1
+Converted["_TextLabel2"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel2"].BorderSizePixel = 0
+Converted["_TextLabel2"].Position = UDim2.new(0.499648541, 0, 0.833542168, 0)
+Converted["_TextLabel2"].Size = UDim2.new(0.619047642, 0, 0.0550245307, 0)
+Converted["_TextLabel2"].Parent = Converted["_AddCustomModule"]
+
 Converted["_Add"].Font = Enum.Font.Gotham
 Converted["_Add"].Text = "Add"
 Converted["_Add"].TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -642,7 +657,7 @@ Converted["_UIGradient4"].Rotation = -44
 Converted["_UIGradient4"].Parent = Converted["_UIStroke7"]
 
 Converted["_AddCustomModule1"].Font = Enum.Font.Gotham
-Converted["_AddCustomModule1"].Text = "IGNORE"
+Converted["_AddCustomModule1"].Text = "Add module"
 Converted["_AddCustomModule1"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_AddCustomModule1"].TextScaled = true
 Converted["_AddCustomModule1"].TextSize = 14
@@ -689,7 +704,7 @@ Converted["_UICorner13"].Parent = Converted["_Close"]
 Converted["_UIStroke9"].Parent = Converted["_Close"]
 
 Converted["_HubCredits"].Font = Enum.Font.GothamBold
-Converted["_HubCredits"].Text = "RO-XCRIPTS ON TOP"
+Converted["_HubCredits"].Text = "Ro-Xcripts on Top!!!"
 Converted["_HubCredits"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubCredits"].TextScaled = true
 Converted["_HubCredits"].TextSize = 14
@@ -707,7 +722,7 @@ Converted["_HubCredits"].Name = "HubCredits"
 Converted["_HubCredits"].Parent = Converted["_Menu"]
 
 Converted["_HubDesc"].Font = Enum.Font.GothamBold
-Converted["_HubDesc"].Text = "Welcome to Ro-Xcripts Hub"
+Converted["_HubDesc"].Text = "Welcome to Ro-Xcripts Hub!"
 Converted["_HubDesc"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubDesc"].TextSize = 14
 Converted["_HubDesc"].TextWrapped = true
@@ -723,7 +738,7 @@ Converted["_HubDesc"].Name = "HubDesc"
 Converted["_HubDesc"].Parent = Converted["_Menu"]
 
 Converted["_HubName"].Font = Enum.Font.GothamBold
-Converted["_HubName"].Text = "RO-XCRIPTS"
+Converted["_HubName"].Text = "YARHM"
 Converted["_HubName"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_HubName"].TextScaled = true
 Converted["_HubName"].TextSize = 14
@@ -777,7 +792,7 @@ Converted["_Opener"].Name = "Opener"
 Converted["_Opener"].Parent = Converted["_CanvasGroup"]
 
 Converted["_TextLabel5"].Font = Enum.Font.GothamBold
-Converted["_TextLabel5"].Text = "Welcome to Ro-Xcripts Hub!"
+Converted["_TextLabel5"].Text = "Ro-Xcripts Hub"
 Converted["_TextLabel5"].TextColor3 = Color3.fromRGB(255, 69.00000348687172, 67.00000360608101)
 Converted["_TextLabel5"].TextScaled = true
 Converted["_TextLabel5"].TextSize = 14
@@ -817,7 +832,7 @@ Converted["_Area1"].Name = "Area"
 Converted["_Area1"].Parent = Converted["_Area"]
 
 Converted["_TextLabel6"].Font = Enum.Font.GothamBold
-Converted["_TextLabel6"].Text = "Happy Exploiting!"
+Converted["_TextLabel6"].Text = "Working and Stable!"
 Converted["_TextLabel6"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel6"].TextSize = 14
 Converted["_TextLabel6"].AnchorPoint = Vector2.new(0.5, 0.5)
@@ -830,7 +845,7 @@ Converted["_TextLabel6"].Size = UDim2.new(0, 200, 0, 50)
 Converted["_TextLabel6"].Parent = Converted["_Area1"]
 
 Converted["_TextLabel7"].Font = Enum.Font.GothamBold
-Converted["_TextLabel7"].Text = "YARHM"
+Converted["_TextLabel7"].Text = "Ro-Xcripts"
 Converted["_TextLabel7"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel7"].TextScaled = true
 Converted["_TextLabel7"].TextSize = 14
@@ -875,7 +890,7 @@ Converted["_UICorner15"].CornerRadius = UDim.new(0, 9999)
 Converted["_UICorner15"].Parent = Converted["_Frame"]
 
 Converted["_TextLabel8"].Font = Enum.Font.Gotham
-Converted["_TextLabel8"].Text = "Tap Here to Minimize!"
+Converted["_TextLabel8"].Text = "Minimize Screen."
 Converted["_TextLabel8"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel8"].TextSize = 15
 Converted["_TextLabel8"].TextWrapped = true
@@ -2186,7 +2201,7 @@ local function VXLACE_fake_script() -- Fake Script: StarterGui.YARHM.Init
 	if not game:IsLoaded() then
 		game.Loaded:Wait()
 	end
-	require(script.Parent.FUNCTIONS).notification("Murder Mystery 2 Game Detected!")
+	require(script.Parent.FUNCTIONS).notification("Welcome to YARHM Astralfire.")
 	
 	ts:Create(script.Parent.Menu, TweenInfo.new(1, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), 
 		{Position = UDim2.fromScale(0.018, 0.968)}
